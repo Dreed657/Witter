@@ -5,14 +5,14 @@
     using System.IO;
     using System.Threading.Tasks;
 
-    using AspNetCoreTemplate.Data;
-    using AspNetCoreTemplate.Data.Common;
-    using AspNetCoreTemplate.Data.Common.Repositories;
-    using AspNetCoreTemplate.Data.Models;
-    using AspNetCoreTemplate.Data.Repositories;
-    using AspNetCoreTemplate.Data.Seeding;
-    using AspNetCoreTemplate.Services.Data;
-    using AspNetCoreTemplate.Services.Messaging;
+    using Witter.Data;
+    using Witter.Data.Common;
+    using Witter.Data.Common.Repositories;
+    using Witter.Data.Models;
+    using Witter.Data.Repositories;
+    using Witter.Data.Seeding;
+    using Witter.Services.Data;
+    using Witter.Services.Messaging;
 
     using CommandLine;
 

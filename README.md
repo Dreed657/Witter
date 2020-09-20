@@ -1,12 +1,12 @@
-# ASP.NET Core Template
+# Witter another Twitter clone 
 
-A ready-to-use template for ASP.NET Core with repositories, services, models mapping, DI and StyleCop warnings fixed.
+This app is craeted by using [Nikolay Kostov's](https://github.com/NikolayIT) [template](https://github.com/NikolayIT/ASP.NET-Core-Template)
 
 ## Build status
 
 [![Build Status](https://nikolayit.visualstudio.com/AspNetCoreTemplate/_apis/build/status/NikolayIT.ASP.NET-Core-Template?branchName=master)](https://nikolayit.visualstudio.com/AspNetCoreTemplate/_build/latest?definitionId=15&branchName=master)
 
-## Authors
+## Author
 
-- [Nikolay Kostov](https://github.com/NikolayIT)
-- [Vladislav Karamfilov](https://github.com/vladislav-karamfilov)
+- [Stoyan Lazarov](https://github.com/Dreed657)
+
