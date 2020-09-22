@@ -26,6 +26,8 @@
 
         public DbSet<Setting> Settings { get; set; }
 
+        public DbSet<Weet> Weets { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -72,6 +74,8 @@
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            //builder.Entity<Weet>(e => e.HasKey(x => x.Id));
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

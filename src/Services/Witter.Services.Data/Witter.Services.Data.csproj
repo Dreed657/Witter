@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Witter.Data.Common\Witter.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\Witter.Data.Models\Witter.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\Witter.Web.ViewModels\Witter.Web.ViewModels.csproj" />
     <ProjectReference Include="..\Witter.Services.Mapping\Witter.Services.Mapping.csproj" />
   </ItemGroup>
 

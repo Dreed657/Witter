@@ -1,0 +1,22 @@
+﻿@model System.Collections.Generic.IEnumerable<Witter.Web.ViewModels.Weets.FeedWeetViewModel>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+    var count = 0;
+}
+
+@foreach (var weet in Model)
+{
+    count++;
+    
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Card title @count</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Created on: @weet.CreatedOn By: @weet.Author.UserName</h6>
+            <p class="card-text">@weet.Content</p>
+            <a href="#" class="card-link">Like</a>
+            <a href="#" class="card-link">Share</a>
+        </div>
+    </div>
+}

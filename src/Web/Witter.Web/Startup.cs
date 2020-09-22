@@ -1,4 +1,7 @@
-﻿namespace Witter.Web
+﻿using AutoMapper;
+using Witter.Services.Contracts;
+
+namespace Witter.Web
 {
     using System.Reflection;
 
@@ -64,6 +67,9 @@
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+
+            // Data Layer 
+            services.AddScoped<IWeetsService, WeetsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
