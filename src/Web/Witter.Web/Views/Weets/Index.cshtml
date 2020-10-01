@@ -21,6 +21,8 @@
 
     @foreach (var weet in Model)
     {
+        var timeSinceUpload = DateTime.Now - weet.CreatedOn;
+        var timeString = timeSinceUpload.Hours < 1 ? $"Created on: {timeSinceUpload.Minutes} minutes ago" : $"Created on: {timeSinceUpload.Hours} hours ago";
         count++;
 
         <div class="card border-0" id=@weet.Id>
@@ -28,7 +30,7 @@
                 <h4 class="card-title">
                     @Html.ActionLink("Card title " + @count, "Detail", "Weets", new { id = @weet.Id.ToString() })
                 </h4>
-                <h6 class="card-subtitle mb-2 text-muted">Created on: @weet.CreatedOn</h6>
+                <h6 class="card-subtitle mb-2 text-muted">@timeString</h6>
                 <h6 class="card-subtitle mb-2 text-muted">By: @weet.Author.UserName</h6>
                 <p class="card-text">@weet.Content</p>
                 <div class="btn-group dropleft">
