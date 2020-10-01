@@ -1,22 +1,48 @@
-﻿@model System.Collections.Generic.IEnumerable<Witter.Web.ViewModels.Weets.FeedWeetViewModel>
+﻿@using Witter.Web.Controllers
+@model System.Collections.Generic.IEnumerable<Witter.Web.ViewModels.Weets.FeedWeetViewModel>
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Feed";
     Layout = "_Layout";
     var count = 0;
 }
 
-@foreach (var weet in Model)
-{
-    count++;
-    
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Card title @count</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Created on: @weet.CreatedOn By: @weet.Author.UserName</h6>
-            <p class="card-text">@weet.Content</p>
-            <a href="#" class="card-link">Like</a>
-            <a href="#" class="card-link">Share</a>
+<div class="container border-left border-right">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="border-bottom">
+            <form method="post" asp-action="Create">
+                <label for="weet">Weet</label>
+                <input type="text" class="form-control" name="Content" placeholder="Weet here">
+                <button type="submit" class="btn btn-primary m-2">Submit</button>
+            </form>
         </div>
-    </div>
-}
+    }
+
+    @foreach (var weet in Model)
+    {
+        count++;
+
+        <div class="card border-0" id=@weet.Id>
+            <div class="card-body border-bottom">
+                <h4 class="card-title">
+                    @Html.ActionLink("Card title " + @count, "Detail", "Weets", new { id = @weet.Id.ToString() })
+                </h4>
+                <h6 class="card-subtitle mb-2 text-muted">Created on: @weet.CreatedOn</h6>
+                <h6 class="card-subtitle mb-2 text-muted">By: @weet.Author.UserName</h6>
+                <p class="card-text">@weet.Content</p>
+                <div class="btn-group dropleft">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropleft
+                    </button>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Edit", "Update", "Weets", new { id = @weet.Id.ToString() }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Delete", "Delete", "Weets", new { id = @weet.Id.ToString() }, new { @class = "dropdown-item" })
+                    </div>
+                </div>
+                @Html.ActionLink("Like (" + @weet.Likes + ")", "Like", "Weets", new { id = @weet.Id.ToString() }, new { @class = "btn btn-info" })
+                <a href="#" class="btn btn-warning ">Share</a>
+            </div>
+        </div>
+    }
+</div>

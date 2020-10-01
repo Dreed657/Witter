@@ -6,17 +6,12 @@ namespace Witter.Data.Models
 
     using Witter.Data.Common.Models;
 
-    public class Weet : IAuditInfo
+    public class Weet : BaseDeletableModel<Guid>
     {
-        [Key]
-        public Guid Id { get; set; }
-
         public ApplicationUser Author { get; set; }
 
         public string Content { get; set; }
 
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime? ModifiedOn { get; set; }
+        public int Likes { get; set; }
     }
 }

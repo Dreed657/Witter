@@ -1,4 +1,7 @@
-﻿namespace Witter.Services.Contracts
+﻿using System.Threading.Tasks;
+using Witter.Data.Models;
+
+namespace Witter.Services.Contracts
 {
     using System.Collections.Generic;
 
@@ -6,8 +9,18 @@
 
     public interface IWeetsService
     {
-        DetailedWeetViewModel Create(WeetCreateModel model);
+        Task Create(WeetCreateModel model, ApplicationUser user);
+
+        Task Delete(string id);
+
+        void Update(string id);
+
+        Task Like(string id);
 
         IEnumerable<T> GetAll<T>();
+
+        IEnumerable<FeedWeetViewModel> Feed();
+
+        DetailedWeetViewModel Get(string Id);
     }
 }
