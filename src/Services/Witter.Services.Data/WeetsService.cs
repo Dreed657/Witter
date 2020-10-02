@@ -67,8 +67,8 @@ namespace Witter.Services.Data
             return this._weetRepository
                 .All()
                 .Where(x => !x.IsDeleted)
-                .To<FeedWeetViewModel>()
                 .OrderByDescending(x => x.CreatedOn)
+                .To<FeedWeetViewModel>()
                 .ToList();
         }
 

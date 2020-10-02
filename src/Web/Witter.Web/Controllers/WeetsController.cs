@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.IdentityModel.Tokens;
-using Witter.Data.Common.Repositories;
+using System.Threading.Tasks;
 using Witter.Data.Models;
 using Witter.Services.Contracts;
 using Witter.Web.ViewModels.Weets;

@@ -1,10 +1,12 @@
 ﻿@using Witter.Web.Controllers
+@using Microsoft.AspNetCore.Identity
+@using Witter.Data.Models
 @model System.Collections.Generic.IEnumerable<Witter.Web.ViewModels.Weets.FeedWeetViewModel>
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewBag.Title = "Feed";
     Layout = "_Layout";
-    var count = 0;
 }
 
 <div class="container border-left border-right">
@@ -21,29 +23,25 @@
 
     @foreach (var weet in Model)
     {
-        var timeSinceUpload = DateTime.Now - weet.CreatedOn;
-        var timeString = timeSinceUpload.Hours < 1 ? $"Created on: {timeSinceUpload.Minutes} minutes ago" : $"Created on: {timeSinceUpload.Hours} hours ago";
-        count++;
-
         <div class="card border-0" id=@weet.Id>
             <div class="card-body border-bottom">
-                <h4 class="card-title">
-                    @Html.ActionLink("Card title " + @count, "Detail", "Weets", new { id = @weet.Id.ToString() })
-                </h4>
-                <h6 class="card-subtitle mb-2 text-muted">@timeString</h6>
-                <h6 class="card-subtitle mb-2 text-muted">By: @weet.Author.UserName</h6>
+                <h6 class="card-subtitle mb-2 text-muted">By: @weet.Author.UserName at @weet.Author.Tag (@weet.CreatedOn)</h6>
                 <p class="card-text">@weet.Content</p>
-                <div class="btn-group dropleft">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropleft
-                    </button>
-                    <div class="dropdown-menu">
-                        @Html.ActionLink("Edit", "Update", "Weets", new { id = @weet.Id.ToString() }, new { @class = "dropdown-item" })
-                        @Html.ActionLink("Delete", "Delete", "Weets", new { id = @weet.Id.ToString() }, new { @class = "dropdown-item" })
+
+                @if (await this.UserManager.GetUserAsync(this.User) == @weet.Author)
+                {
+                    <div class="btn-group dropleft">
+                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropleft
+                        </button>
+                        <div class="dropdown-menu">
+                            @Html.ActionLink("Edit", "Update", "Weets", new { id = @weet.Id.ToString() }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("Delete", "Delete", "Weets", new { id = @weet.Id.ToString() }, new { @class = "dropdown-item" })
+                        </div>
                     </div>
-                </div>
+                }
                 @Html.ActionLink("Like (" + @weet.Likes + ")", "Like", "Weets", new { id = @weet.Id.ToString() }, new { @class = "btn btn-info" })
-                <a href="#" class="btn btn-warning ">Share</a>
+                @Html.ActionLink("See more.. ", "Detail", "Weets", new { id = @weet.Id.ToString() }, new { @class = "btn btn-warning" })
             </div>
         </div>
     }

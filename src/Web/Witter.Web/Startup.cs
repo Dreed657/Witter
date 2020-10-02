@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Witter.Services.Contracts;
+using Witter.Services.Data.Contracts;
 
 namespace Witter.Web
 {
@@ -70,6 +71,7 @@ namespace Witter.Web
 
             // Data Layer 
             services.AddScoped<IWeetsService, WeetsService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
