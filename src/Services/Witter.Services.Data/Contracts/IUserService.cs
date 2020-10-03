@@ -5,6 +5,6 @@ namespace Witter.Services.Data.Contracts
 {
     public interface IUserService
     {
-        ProfileViewModel GetProfileByUser(ApplicationUser user);
+        ProfileViewModel GetProfileByUser(string username);
     }
 }

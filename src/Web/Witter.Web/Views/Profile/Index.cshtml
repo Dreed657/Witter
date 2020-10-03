@@ -1,9 +1,13 @@
-﻿@{
-    ViewBag.Title = "Profile - @" + ViewBag.data.Tag;
+﻿@using Microsoft.AspNetCore.Identity
+@using Witter.Data.Models
+@model Witter.Web.ViewModels.Profile.ProfileViewModel
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewBag.Title = "Profile - @" + @Model.Tag;
 }
 <div class="container">
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="col-xs-12 col-sm-6 col-md-6 pb-4 border-bottom">
             <div class="well well-sm">
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
@@ -11,7 +15,7 @@
                     </div>
                     <div class="col-sm-6 col-md-8">
                         <h4>
-                            @ViewBag.data.FirstName @ViewBag.data.LastName
+                            @Model.Tag
                         </h4>
                         <small>
                             <cite title="San Francisco, USA">
@@ -20,31 +24,37 @@
                             </cite>
                         </small>
                         <p>
-                            <i class="glyphicon glyphicon-envelope"></i>@ViewBag.data.UserName @@example.com
+                            <i class="glyphicon glyphicon-envelope"></i>@Model.UserName@@test.com
                             <br />
                             <i class="glyphicon glyphicon-globe"></i><a href="http://www.jquery2dotnet.com">www.jquery2dotnet.com</a>
                             <br />
-                            <i class="glyphicon glyphicon-gift"></i>@ViewBag.data.BirthDate
+                            <i class="glyphicon glyphicon-gift"></i>@Model.CreatedOn
                         </p>
-                        <!-- Split button -->
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary">
-                                Social
-                            </button>
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                <span class="caret"></span><span class="sr-only">Social</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Twitter</a></li>
-                                <li><a href="https://plus.google.com/+Jquery2dotnet/posts">Google +</a></li>
-                                <li><a href="https://www.facebook.com/jquery2dotnet">Facebook</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Github</a></li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    @foreach (var weet in Model.Weets.OrderByDescending(x => x.CreatedOn))
+    {
+        <div class="card border-0" id=@weet.Id>
+            <div class="card-body border-bottom">
+                <h6 class="card-subtitle mb-2 text-muted">
+                    You created this post @weet.CreatedOn.
+                </h6>
+                <p class="card-text">@weet.Content</p>
+                <div class="btn-group dropleft">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropleft
+                    </button>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Edit", "Update", "Weets", new { id = @weet.Id.ToString() }, new { @class = "dropdown-item" })
+                        @Html.ActionLink("Delete", "Delete", "Weets", new { id = @weet.Id.ToString() }, new { @class = "dropdown-item" })
+                    </div>
+                </div>
+                @Html.ActionLink("Like (" + @weet.Likes + ")", "Like", "Weets", new { id = @weet.Id.ToString() }, new { @class = "btn btn-info" })
+                @Html.ActionLink("See more.. ", "Detail", "Weets", new { id = @weet.Id.ToString() }, new { @class = "btn btn-warning" })
+            </div>
+        </div>
+    }
 </div>

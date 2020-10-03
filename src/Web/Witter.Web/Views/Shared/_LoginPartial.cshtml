@@ -9,7 +9,8 @@
     {
         <li class="nav-item">
             @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @(UserManager.GetUserAsync(this.User).Result.UserName)!</a>*@
-            <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index">Hello @(UserManager.GetUserAsync(this.User).Result.UserName)!</a>
+            @Html.ActionLink("Hello" + UserManager.GetUserAsync(this.User).Result.UserName, "Index", "Profile", new { username = UserManager.GetUserAsync(this.User).Result.UserName }, new { @class = "nav-link text-dark" })
+
         </li>
         if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {

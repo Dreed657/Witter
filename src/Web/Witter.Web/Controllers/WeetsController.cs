@@ -28,6 +28,7 @@ namespace Witter.Web.Controllers
             return this.View(weets);
         }
 
+        // TODO: Redirect to page of action
         [Authorize]
         public async Task<IActionResult> Create(WeetCreateModel model)
         {
@@ -52,11 +53,10 @@ namespace Witter.Web.Controllers
                 return this.NotFound();
             }
 
-            this.ViewBag.Weet = weet;
-
-            return this.View();
+            return this.View(weet);
         }
 
+        // TODO: Redirect to page of action
         public async Task<IActionResult> Delete(string id)
         {
             await this.weetsService.Delete(id);
@@ -66,6 +66,8 @@ namespace Witter.Web.Controllers
 
         /// <summary>
         ///   Change the redirect to something more flexible.
+        ///
+        ///   TODO: Make Ajax request to this endpoint and not redirect!
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

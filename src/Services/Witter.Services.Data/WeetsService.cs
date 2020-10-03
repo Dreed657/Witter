@@ -62,19 +62,21 @@ namespace Witter.Services.Data
             return this._weetRepository.All().To<T>().ToList();
         }
 
-        public IEnumerable<FeedWeetViewModel> Feed()
+        public IEnumerable<FullWeetViewModel> Feed()
         {
             return this._weetRepository
                 .All()
                 .Where(x => !x.IsDeleted)
                 .OrderByDescending(x => x.CreatedOn)
-                .To<FeedWeetViewModel>()
+                .To<FullWeetViewModel>()
                 .ToList();
         }
 
-        public DetailedWeetViewModel Get(string Id)
+        //TODO: Fix error thrown for not post given back
+
+        public FullWeetViewModel Get(string Id)
         {
-            var result = this._weetRepository.AllAsNoTracking().To<DetailedWeetViewModel>().First(x => x.Id.ToString() == Id);
+            var result = this._weetRepository.AllAsNoTracking().To<FullWeetViewModel>().First(x => x.Id.ToString() == Id);
 
             return result;
         }

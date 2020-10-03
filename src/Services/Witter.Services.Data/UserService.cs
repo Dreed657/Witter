@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Witter.Data.Common.Repositories;
 using Witter.Data.Models;
@@ -17,9 +18,13 @@ namespace Witter.Services.Data
             this._userRepository = repository;
         }
 
-        public ProfileViewModel GetProfileByUser(ApplicationUser user)
+        public ProfileViewModel GetProfileByUser(string username)
         {
-            return this._userRepository.All().Where(x => x == user).To<ProfileViewModel>().First();
+            return this._userRepository
+                .All()
+                .To<ProfileViewModel>()
+                .ToList()
+                .FirstOrDefault(x => string.Compare(x.UserName, username, StringComparison.OrdinalIgnoreCase) == 0);
         }
     }
 }

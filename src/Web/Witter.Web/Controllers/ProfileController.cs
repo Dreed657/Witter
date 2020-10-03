@@ -24,14 +24,17 @@ namespace Witter.Web.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        [HttpGet("/Profile/{username}")]
+        public async Task<IActionResult> Index(string username)
         {
-            var profileData = this.usersService.GetProfileByUser(await this.userManager.GetUserAsync(this.User));
+            var profileData = this.usersService.GetProfileByUser(username);
 
-            this.ViewBag.data = profileData;
+            if (profileData == null)
+            {
+                return this.NotFound($"No matching profile with this username ({username}).");
+            }
 
-            return this.View();
+            return this.View(profileData);
         }
     }
 }
