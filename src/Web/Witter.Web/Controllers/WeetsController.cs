@@ -43,14 +43,14 @@ namespace Witter.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return this.RedirectToAction("NotFound", "Home");
             }
 
             var weet = this.weetsService.Get(id);
 
             if (weet == null)
             {
-                return this.NotFound();
+                return this.RedirectToAction("NotFound", "Home");
             }
 
             return this.View(weet);

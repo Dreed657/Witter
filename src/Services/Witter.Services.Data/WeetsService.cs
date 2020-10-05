@@ -76,7 +76,11 @@ namespace Witter.Services.Data
 
         public FullWeetViewModel Get(string Id)
         {
-            var result = this._weetRepository.AllAsNoTracking().To<FullWeetViewModel>().First(x => x.Id.ToString() == Id);
+            var result = this._weetRepository
+                .All()
+                .To<FullWeetViewModel>()
+                .ToList()
+                .FirstOrDefault(x => string.Compare(x.Id.ToString(), Id, StringComparison.OrdinalIgnoreCase) == 0);
 
             return result;
         }

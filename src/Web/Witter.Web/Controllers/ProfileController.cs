@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Witter.Common;
 using Witter.Data.Models;
 using Witter.Services.Data.Contracts;
 
@@ -23,6 +24,8 @@ namespace Witter.Web.Controllers
             this.usersService = service;
         }
 
+        // TODO: Return 404 error page
+
         [Authorize]
         [HttpGet("/Profile/{username}")]
         public async Task<IActionResult> Index(string username)
@@ -31,9 +34,12 @@ namespace Witter.Web.Controllers
 
             if (profileData == null)
             {
-                return this.NotFound($"No matching profile with this username ({username}).");
+                return this.RedirectToAction("NotFound", "Home");
+                //return this.NotFound($"No matching profile with this username ({username}).");
             }
 
+            //await this.userManager.AddToRoleAsync(await this.userManager.GetUserAsync(this.User), GlobalConstants.AdministratorRoleName);
+            
             return this.View(profileData);
         }
     }
