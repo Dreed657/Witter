@@ -28,32 +28,30 @@ namespace Witter.Web.ViewModels.Weets
             );
         }
 
-        //TODO: Better way to determin time from datetime object
-
         private static string ConvertTime(DateTime time)
         {
-            var timeSpanUpload = DateTime.Now - time;
+            var timeSinceUpload = DateTime.Now - time.AddHours(3);
             string timeString;
 
-            if (timeSpanUpload.Seconds < 10)
+            if (timeSinceUpload.TotalSeconds < 10)
             {
                 timeString = "Now";
             }
-            else if (timeSpanUpload.Minutes < 1)
+            else if (timeSinceUpload.TotalMinutes < 1)
             {
-                timeString = $"{timeSpanUpload.Seconds} seconds ago";
+                timeString = $"{timeSinceUpload.Seconds} seconds ago";
             }
-            else if (timeSpanUpload.Hours < 1)
+            else if (timeSinceUpload.TotalHours < 1)
             {
-                timeString = $"{timeSpanUpload.Minutes} minutes ago";
+                timeString = $"{timeSinceUpload.Minutes} minutes ago";
             }
-            else if (timeSpanUpload.Days < 1)
+            else if (timeSinceUpload.TotalDays < 1)
             {
-                timeString = $"{timeSpanUpload.Hours} hours ago";
+                timeString = $"{timeSinceUpload.Hours} hours ago";
             }
             else
             {
-                timeString = $"{timeSpanUpload.Days} days ago";
+                timeString = $"{timeSinceUpload.Days} days ago";
             }
 
             return timeString;
