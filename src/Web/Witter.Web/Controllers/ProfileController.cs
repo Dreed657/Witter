@@ -12,25 +12,28 @@ using Witter.Services.Data.Contracts;
 
 namespace Witter.Web.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        private readonly IUserService usersService;
+        private readonly IUserService _usersService;
 
-        public ProfileController(IUserService service, UserManager<ApplicationUser> userManager)
+        private readonly IFollowerService _followerService;
+
+        public ProfileController(IUserService userService, IFollowerService followerService, UserManager<ApplicationUser> userManager)
         {
-            this.userManager = userManager;
-            this.usersService = service;
+            this._userManager = userManager;
+            this._usersService = userService;
+            this._followerService = followerService;
         }
 
         // TODO: Return 404 error page
 
-        [Authorize]
         [HttpGet("/Profile/{username}")]
         public async Task<IActionResult> Index(string username)
         {
-            var profileData = this.usersService.GetProfileByUser(username);
+            var profileData = this._usersService.GetProfileByUser(username);
 
             if (profileData == null)
             {
@@ -38,9 +41,28 @@ namespace Witter.Web.Controllers
                 //return this.NotFound($"No matching profile with this username ({username}).");
             }
 
+            //TODO: DELETE!!!
             //await this.userManager.AddToRoleAsync(await this.userManager.GetUserAsync(this.User), GlobalConstants.AdministratorRoleName);
             
             return this.View(profileData);
+        }
+
+        public async Task<IActionResult> Follow(string id)
+        {
+            var loggedInUser = await this._userManager.GetUserAsync(this.User);
+
+            await this._followerService.Follow(loggedInUser.Id, id);
+
+            return this.Redirect($"/");
+        }
+
+        public async Task<IActionResult> UnFollow(string id)
+        {
+            var loggedInUser = await this._userManager.GetUserAsync(this.User);
+
+            await this._followerService.UnFollow(loggedInUser.Id, id);
+
+            return this.Redirect($"/");
         }
     }
 }

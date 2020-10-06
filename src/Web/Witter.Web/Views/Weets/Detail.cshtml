@@ -15,7 +15,7 @@
                 @Html.ActionLink(@Model.Author.UserName, "Index", "Profile", new { username = @Model.Author.UserName }, null)
             </p>
             <hr>
-            <p>Posted on @Model.CreatedOn</p>
+            <p>Posted on @Model.CreatedOnOffset</p>
             <hr>
             <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
             <hr>

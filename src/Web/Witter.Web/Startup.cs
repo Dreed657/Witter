@@ -70,8 +70,9 @@ namespace Witter.Web
             services.AddTransient<ISettingsService, SettingsService>();
 
             // Data Layer 
-            services.AddScoped<IWeetsService, WeetsService>();
-            services.AddScoped<IUserService, UserService>();
+            services.AddTransient<IWeetsService, WeetsService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IFollowerService, FollowerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

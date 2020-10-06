@@ -26,7 +26,7 @@ namespace Witter.Data.Models
 
         public string Tag { get; set; }
         
-        // TODO: Add About me string property;
+        public string AboutMe { get; set; }
 
         /// <summary>
         ///   TODO: Add Country and tables for them
