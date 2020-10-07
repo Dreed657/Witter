@@ -64,20 +64,6 @@ namespace Witter.Web.Controllers
             return this.RedirectToAction(nameof(this.Index));
         }
 
-        /// <summary>
-        ///   Change the redirect to something more flexible.
-        ///
-        ///   TODO: Make Ajax request to this endpoint and not redirect!
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<IActionResult> Like(string id)
-        {
-            await this.weetsService.Like(id);
-
-            return this.Redirect("/Feed#" + id);
-        }
-
         public IActionResult Update(string id)
         {
             return Ok(id);

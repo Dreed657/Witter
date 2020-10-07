@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Witter.Services.Mapping;
 
 namespace Witter.Services.Data
@@ -41,19 +42,9 @@ namespace Witter.Services.Data
             throw new NotImplementedException();
         }
 
-        public async Task Like(string id)
-        {
-            var weet = this.GetById(id);
-
-            weet.Likes++;
-
-            this._weetRepository.Update(weet);
-            await this._weetRepository.SaveChangesAsync();
-        }
-
         public async Task Delete(string id)
         {
-            this._weetRepository.Delete(this.GetById(id));
+            this._weetRepository.Delete(await this.GetById(id));
             await this._weetRepository.SaveChangesAsync();
         }
 
@@ -72,8 +63,6 @@ namespace Witter.Services.Data
                 .ToList();
         }
 
-        //TODO: Fix error thrown for not post given back
-
         public FullWeetViewModel Get(string Id)
         {
             var result = this._weetRepository
@@ -85,9 +74,9 @@ namespace Witter.Services.Data
             return result;
         }
 
-        private Weet GetById(string id)
+        private async Task<Weet> GetById(string id)
         {
-            return this._weetRepository.All().First(x => x.Id.ToString() == id);
+            return await this._weetRepository.All().FirstOrDefaultAsync(x => x.Id.ToString() == id);
         }
     }
 }

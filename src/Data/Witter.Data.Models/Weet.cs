@@ -11,7 +11,5 @@ namespace Witter.Data.Models
         public ApplicationUser Author { get; set; }
 
         public string Content { get; set; }
-
-        public int Likes { get; set; }
     }
 }

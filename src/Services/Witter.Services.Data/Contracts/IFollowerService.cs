@@ -7,9 +7,9 @@ namespace Witter.Services.Data.Contracts
 {
     public interface IFollowerService
     {
-        int FollowersCount(string userId);
+        int GetFollowersCount(string userId);
 
-        int FollowingCount(string userId);
+        int GetFollowingCount(string userId);
 
         Task Follow(string parentId, string followerId);
 

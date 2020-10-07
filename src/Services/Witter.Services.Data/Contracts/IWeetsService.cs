@@ -15,8 +15,6 @@ namespace Witter.Services.Contracts
 
         void Update(string id);
 
-        Task Like(string id);
-
         IEnumerable<T> GetAll<T>();
 
         IEnumerable<FullWeetViewModel> Feed();

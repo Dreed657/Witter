@@ -41,12 +41,16 @@
                                 @Html.ActionLink("UnFollow", "UnFollow", "Profile", new { id = @Model.Id }, new { @class = "btn btn-danger" })
                             }
                         }
+                        else
+                        {
+                            @Html.ActionLink("Settings", "index", "Settings", null, new { @class = "btn btn-warning" })
+                        }
                     </div>
                     <div class="col">
-                        <p>Followers:</p>
-                        <small>@this.followerService.FollowersCount(@Model.Id)</small>
-                        <p>Following:</p>
-                        <small>@this.followerService.FollowingCount(@Model.Id)</small>
+                        <p class="mb-0">Followers:</p>
+                        <small>@Model.Followers</small>
+                        <p class="mb-0">Following:</p>
+                        <small>@Model.Following</small>
                     </div>
                 </div>
             </div>
@@ -64,7 +68,7 @@
                     <div class="card border-0" id=@weet.Id>
                         <div class="card-body border-bottom">
                             <h6 class="card-subtitle mb-2 text-muted">
-                                You created this post @weet.CreatedOnOffset.
+                                Created: @weet.CreatedOnOffset.
                             </h6>
                             <p class="card-text">@weet.Content</p>
                             @if (await this.UserManager.GetUserAsync(this.User) == @weet.Author)

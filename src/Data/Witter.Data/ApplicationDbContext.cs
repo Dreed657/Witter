@@ -30,6 +30,8 @@
 
         public DbSet<UserFollowers> UserFollowers { get; set; }
 
+        public DbSet<WeetLikes> WeetLikes { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -78,6 +80,7 @@
             }
 
             builder.Entity<UserFollowers>(e => e.HasKey(x => new {x.ParentId, x.FollowerId}));
+            builder.Entity<WeetLikes>(e => e.HasKey(x => new { x.ParentId, x.WeetId }));
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

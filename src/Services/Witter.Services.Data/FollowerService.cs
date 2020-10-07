@@ -9,14 +9,14 @@ namespace Witter.Services.Data
 {
     public class FollowerService : IFollowerService
     {
-        private readonly IDeletableEntityRepository<UserFollowers> followerRepository;
+        private readonly IRepository<UserFollowers> followerRepository;
 
-        public FollowerService(IDeletableEntityRepository<UserFollowers> repository)
+        public FollowerService(IRepository<UserFollowers> repository)
         {
             this.followerRepository = repository;
         }
 
-        public int FollowersCount(string userId)
+        public int GetFollowersCount(string userId)
         {
             return this.followerRepository
                 .All()
@@ -24,7 +24,7 @@ namespace Witter.Services.Data
                 .Count(x => x.FollowerId == userId);
         }
 
-        public int FollowingCount(string userId)
+        public int GetFollowingCount(string userId)
         {
             return this.followerRepository
                 .All()

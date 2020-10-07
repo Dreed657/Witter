@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Witter.Data.Models;
 using Witter.Services.Mapping;
 using Witter.Web.ViewModels.Weets;
@@ -15,6 +16,12 @@ namespace Witter.Web.ViewModels.Profile
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        [NotMapped]
+        public int Followers { get; set; }
+
+        [NotMapped]
+        public int Following { get; set; }
 
         public DateTime BirthDate { get; set; }
 

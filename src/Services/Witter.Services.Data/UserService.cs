@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using System.Runtime.InteropServices;
 using Witter.Data.Common.Repositories;
 using Witter.Data.Models;
 using Witter.Services.Data.Contracts;
@@ -11,20 +11,33 @@ namespace Witter.Services.Data
 {
     public class UserService : IUserService
     {
-        private readonly IDeletableEntityRepository<ApplicationUser> _userRepository;
+        private readonly IRepository<ApplicationUser> _userRepository;
 
-        public UserService(IDeletableEntityRepository<ApplicationUser> repository)
+        private readonly IFollowerService _followerService;
+
+        public UserService(IRepository<ApplicationUser> repository, IFollowerService followerService)
         {
             this._userRepository = repository;
+            this._followerService = followerService;
         }
 
         public ProfileViewModel GetProfileByUser(string username)
         {
-            return this._userRepository
+            var entity = this._userRepository
                 .All()
                 .To<ProfileViewModel>()
                 .ToList()
                 .FirstOrDefault(x => string.Compare(x.UserName, username, StringComparison.OrdinalIgnoreCase) == 0);
+
+            if (entity == null)
+            {
+                return null;
+            }
+
+            entity.Followers = this._followerService.GetFollowersCount(entity.Id);
+            entity.Following = this._followerService.GetFollowingCount(entity.Id);
+
+            return entity;
         }
     }
 }
