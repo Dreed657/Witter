@@ -1,29 +1,34 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Witter.Data.Models;
 using Witter.Services.Contracts;
+using Witter.Services.Data.Contracts;
 using Witter.Web.ViewModels.Weets;
 
 namespace Witter.Web.Controllers
 {
     public class WeetsController : BaseController
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        private readonly IWeetsService weetsService;
+        private readonly IWeetsService _weetsService;
 
-        public WeetsController(IWeetsService service, UserManager<ApplicationUser> userManager)
+        private readonly ILikeService _likeService;
+
+        public WeetsController(IWeetsService weetService, ILikeService likeService, UserManager<ApplicationUser> userManager)
         {
-            this.userManager = userManager;
-            this.weetsService = service;
+            this._userManager = userManager;
+            this._weetsService = weetService;
+            this._likeService = likeService;
         }
 
         [Route("Feed")]
         public IActionResult Index()
         {
-            var weets = this.weetsService.Feed();
+            var weets = this._weetsService.Feed();
 
             return this.View(weets);
         }
@@ -32,9 +37,9 @@ namespace Witter.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Create(WeetCreateModel model)
         {
-            var user = await this.userManager.GetUserAsync(this.User);
+            var user = await this._userManager.GetUserAsync(this.User);
 
-            await this.weetsService.Create(model, user);
+            await this._weetsService.Create(model, user);
 
             return this.RedirectToAction(nameof(this.Index));
         }
@@ -46,7 +51,7 @@ namespace Witter.Web.Controllers
                 return this.RedirectToAction("NotFound", "Home");
             }
 
-            var weet = this.weetsService.Get(id);
+            var weet = this._weetsService.Get(id);
 
             if (weet == null)
             {
@@ -56,12 +61,30 @@ namespace Witter.Web.Controllers
             return this.View(weet);
         }
 
+        public async Task<IActionResult> Like(string id)
+        {
+            var loggedInUser = await this._userManager.GetUserAsync(this.User);
+
+            await this._likeService.Like(loggedInUser.Id, id);
+
+            return this.Redirect("/");
+        }
+
+        public async Task<IActionResult> DisLike(string id)
+        {
+            var loggedInUser = await this._userManager.GetUserAsync(this.User);
+
+            await this._likeService.DisLike(loggedInUser.Id, id);
+
+            return this.Redirect("/");
+        }
+
         // TODO: Redirect to page of action
         public async Task<IActionResult> Delete(string id)
         {
-            await this.weetsService.Delete(id);
+            await this._weetsService.Delete(id);
 
-            return this.RedirectToAction(nameof(this.Index));
+            return this.Redirect("/");
         }
 
         public IActionResult Update(string id)

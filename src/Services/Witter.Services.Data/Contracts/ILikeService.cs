@@ -1,13 +1,15 @@
-﻿namespace Witter.Services.Data.Contracts
+﻿using System.Threading.Tasks;
+
+namespace Witter.Services.Data.Contracts
 {
     public interface ILikeService
     {
         int LikesCount(string weetId);
 
-        void Like(string weetId);
+        Task Like(string userId, string weetId);
 
-        void DisLike(string weetId);
+        Task DisLike(string userId, string weetId);
 
-        bool IsLiked(string weetId);
+        bool IsLiked(string userId, string weetId);
     }
 }

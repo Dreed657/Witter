@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -38,12 +39,8 @@ namespace Witter.Web.Controllers
             if (profileData == null)
             {
                 return this.RedirectToAction("NotFound", "Home");
-                //return this.NotFound($"No matching profile with this username ({username}).");
             }
 
-            //TODO: DELETE!!!
-            //await this.userManager.AddToRoleAsync(await this.userManager.GetUserAsync(this.User), GlobalConstants.AdministratorRoleName);
-            
             return this.View(profileData);
         }
 
@@ -53,7 +50,7 @@ namespace Witter.Web.Controllers
 
             await this._followerService.Follow(loggedInUser.Id, id);
 
-            return this.Redirect($"/");
+            return this.Redirect("/");
         }
 
         public async Task<IActionResult> UnFollow(string id)
@@ -62,7 +59,7 @@ namespace Witter.Web.Controllers
 
             await this._followerService.UnFollow(loggedInUser.Id, id);
 
-            return this.Redirect($"/");
+            return this.Redirect("/");
         }
     }
 }

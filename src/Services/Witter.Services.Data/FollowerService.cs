@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Witter.Data.Common.Repositories;
 using Witter.Data.Models;
 using Witter.Services.Data.Contracts;
@@ -21,7 +22,9 @@ namespace Witter.Services.Data
             return this.followerRepository
                 .All()
                 .Where(x => x.IsFollowing)
-                .Count(x => x.FollowerId == userId);
+                .CountAsync(x => x.FollowerId == userId)
+                .GetAwaiter()
+                .GetResult();
         }
 
         public int GetFollowingCount(string userId)
@@ -29,29 +32,31 @@ namespace Witter.Services.Data
             return this.followerRepository
                 .All()
                 .Where(x => x.IsFollowing)
-                .Count(x => x.ParentId == userId);
+                .CountAsync(x => x.ParentId == userId)
+                .GetAwaiter()
+                .GetResult();
         }
 
         public async Task Follow(string parentId, string followerId)
         {
-            var alreadyInDb = this.followerRepository
+            var entity = this.followerRepository
                 .All()
                 .FirstOrDefault(x => x.ParentId == parentId && x.FollowerId == followerId);
 
-            if (alreadyInDb == null)
+            if (entity == null)
             {
-                var entity = new UserFollowers()
+                var insertEntity = new UserFollowers()
                 {
                     ParentId = parentId,
                     FollowerId = followerId,
                     IsFollowing = true,
                 };
 
-                await this.followerRepository.AddAsync(entity);
+                await this.followerRepository.AddAsync(insertEntity);
             }
             else
             {
-                alreadyInDb.IsFollowing = true;
+                entity.IsFollowing = true;
             }
 
             await this.followerRepository.SaveChangesAsync();
@@ -59,7 +64,11 @@ namespace Witter.Services.Data
 
         public async Task UnFollow(string parentId, string followerId)
         {
-            var entity = this.followerRepository.All().FirstOrDefault(x => x.ParentId == parentId && x.FollowerId == followerId);
+            var entity = this.followerRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.ParentId == parentId && x.FollowerId == followerId)
+                .GetAwaiter()
+                .GetResult();
 
             if (entity.IsFollowing)
             {
@@ -70,8 +79,11 @@ namespace Witter.Services.Data
 
         public bool IsFollowing(string parentId, string followerId)
         {
-            var entity = this.followerRepository.All()
-                .FirstOrDefault(x => x.ParentId == parentId && x.FollowerId == followerId);
+            var entity = this.followerRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.ParentId == parentId && x.FollowerId == followerId)
+                .GetAwaiter()
+                .GetResult();
 
             return entity != null && entity.IsFollowing;
         }
