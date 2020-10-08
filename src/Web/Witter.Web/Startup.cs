@@ -66,10 +66,8 @@ namespace Witter.Web
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<IEmailSender, SendGridEmailSender>(x => new SendGridEmailSender(this.configuration["SendGrid_ApiKey"]));
             services.AddTransient<ISettingsService, SettingsService>();
-
-            // Data Layer 
             services.AddTransient<IWeetsService, WeetsService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IFollowerService, FollowerService>();

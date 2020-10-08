@@ -1,8 +1,8 @@
 ﻿using System;
 using AutoMapper;
-using Witter.Common;
 using Witter.Data.Models;
 using Witter.Services.Mapping;
+using Witter.Web.ViewModels.Common;
 
 namespace Witter.Web.ViewModels.Weets
 {
@@ -25,7 +25,7 @@ namespace Witter.Web.ViewModels.Weets
             configuration.CreateMap<Weet, FullWeetViewModel>().ForMember(
                 x => x.CreatedOnOffset,
                 opt =>
-                    opt.MapFrom(y => GlobalConstants.TimeConverter(y.CreatedOn))
+                    opt.MapFrom(y => ViewModelConstants.TimeConverter(y.CreatedOn))
             );
         }
     }

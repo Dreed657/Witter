@@ -6,7 +6,7 @@
 @inject IFollowerService followerService
 @inject ILikeService likeService
 @{
-    ViewBag.Title = "Profile - (@" + @Model.Tag + ")";
+    ViewBag.Title = "Profile - (@" + @Model.UserName + ")";
 }
 <div class="container">
     <div class="row">
@@ -18,7 +18,7 @@
                     </div>
                     <div class="col">
                         <h4>
-                            @Model.Tag
+                            @Model.UserName
                         </h4>
                         <small>
                             <cite title="San Francisco, USA">
@@ -84,13 +84,16 @@
                                 </div>
                             </div>
                         }
-                        @if (!this.likeService.IsLiked(this.UserManager.GetUserAsync(this.User).GetAwaiter().GetResult().Id, weet.Id.ToString()))
+                        @if (this.User.Identity.IsAuthenticated)
                         {
-                            @Html.ActionLink("Like (" + this.likeService.LikesCount(weet.Id.ToString()) + ")", "Like", "Weets", new { id = @weet.Id }, new { @class = "btn btn-info" })
-                        }
-                        else
-                        {
-                            @Html.ActionLink("DisLike (" + this.likeService.LikesCount(weet.Id.ToString()) + ")", "DisLike", "Weets", new { id = @weet.Id }, new { @class = "btn btn-danger" })
+                            @if (!this.likeService.IsLiked(this.UserManager.GetUserAsync(this.User).GetAwaiter().GetResult().Id, weet.Id.ToString()))
+                            {
+                                @Html.ActionLink("Like (" + this.likeService.LikesCount(weet.Id.ToString()) + ")", "Like", "Weets", new { id = @weet.Id }, new { @class = "btn btn-info" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("DisLike (" + this.likeService.LikesCount(weet.Id.ToString()) + ")", "DisLike", "Weets", new { id = @weet.Id }, new { @class = "btn btn-danger" })
+                            }
                         }
                         @Html.ActionLink("See more.. ", "Detail", "Weets", new { id = @weet.Id }, new { @class = "btn btn-warning" })
                     </div>

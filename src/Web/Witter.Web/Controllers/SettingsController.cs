@@ -9,6 +9,7 @@
     using Witter.Web.ViewModels.Settings;
 
     using Microsoft.AspNetCore.Mvc;
+    using Witter.Services.Messaging;
 
     public class SettingsController : BaseController
     {
@@ -16,16 +17,22 @@
 
         private readonly IDeletableEntityRepository<Setting> repository;
 
-        public SettingsController(ISettingsService settingsService, IDeletableEntityRepository<Setting> repository)
+        private readonly IEmailSender emailSender;
+
+        public SettingsController(ISettingsService settingsService, IDeletableEntityRepository<Setting> repository, IEmailSender emailSender)
         {
             this.settingsService = settingsService;
             this.repository = repository;
+            this.emailSender = emailSender;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var settings = this.settingsService.GetAll<SettingViewModel>();
             var model = new SettingsListViewModel { Settings = settings };
+
+            await this.emailSender.SendEmailAsync(@"ninjakiviWTF@gmail.com", @"Witter noreply", @"igopmvvwjqjoptdmrp@etochq.com", "Email Confirmation", @"<h1>Hello World!</h1>");
+
             return this.View(model);
         }
 
