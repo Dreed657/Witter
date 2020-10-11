@@ -32,6 +32,5 @@ namespace Witter.Web.ViewModels.Common
 
             return timeString;
         }
-
     }
 }

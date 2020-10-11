@@ -1,5 +1,4 @@
-﻿@using Witter.Web.Controllers
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @using Witter.Data.Models
 @using Witter.Services.Data.Contracts
 @model System.Collections.Generic.IEnumerable<Witter.Web.ViewModels.Weets.FullWeetViewModel>
@@ -25,40 +24,6 @@
 
     @foreach (var weet in Model)
     {
-        <div class="card border-0" id=@weet.Id>
-            <div class="card-body border-bottom">
-                <h6 class="card-subtitle mb-2 text-muted">
-                    By:
-                    @Html.ActionLink(@weet.Author.UserName, "Index", "Profile", new { username = @weet.Author.UserName }, null) at
-                    @weet.Author.Tag (@weet.CreatedOnOffset)
-                </h6>
-                <p class="card-text">@weet.Content</p>
-
-                @if (await this.UserManager.GetUserAsync(this.User) == @weet.Author)
-                {
-                    <div class="btn-group dropleft">
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropleft
-                        </button>
-                        <div class="dropdown-menu">
-                            @Html.ActionLink("Edit", "Update", "Weets", new { id = @weet.Id }, new { @class = "dropdown-item" })
-                            @Html.ActionLink("Delete", "Delete", "Weets", new { id = @weet.Id }, new { @class = "dropdown-item" })
-                        </div>
-                    </div>
-                }
-                @if (this.User.Identity.IsAuthenticated)
-                {
-                    @if (!this.likeService.IsLiked(this.UserManager.GetUserAsync(this.User).GetAwaiter().GetResult().Id, weet.Id.ToString()))
-                    {
-                        @Html.ActionLink("Like (" + this.likeService.LikesCount(weet.Id.ToString()) + ")", "Like", "Weets", new { id = @weet.Id }, new { @class = "btn btn-info" })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("DisLike (" + this.likeService.LikesCount(weet.Id.ToString()) + ")", "DisLike", "Weets", new { id = @weet.Id }, new { @class = "btn btn-danger" })
-                    }
-                }
-                @Html.ActionLink("See more.. ", "Detail", "Weets", new { id = @weet.Id }, new { @class = "btn btn-warning" })
-            </div>
-        </div>
+        @Html.Partial("_WeetPartial", weet);
     }
 </div>

@@ -16,22 +16,11 @@ namespace Witter.Services.Data
             this._likesRepository = likesRepo;
         }
 
-        public int LikesCount(string weetId)
-        {
-            return this._likesRepository
-                .All()
-                .Where(x => x.IsLiked)
-                .ToListAsync()
-                .GetAwaiter()
-                .GetResult()
-                .Count(x => x.WeetId.ToString() == weetId);
-        }
-
         public async Task Like(string userId, string weetId)
         {
             var entity = this._likesRepository
                 .All()
-                .FirstOrDefaultAsync(x => x.ParentId == userId && x.WeetId == weetId)
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.WeetId == weetId)
                 .GetAwaiter()
                 .GetResult();
 
@@ -39,7 +28,7 @@ namespace Witter.Services.Data
             {
                 var newEntity = new WeetLikes()
                 {
-                    ParentId = userId,
+                    UserId = userId,
                     WeetId = weetId,
                     IsLiked = true,
                 };
@@ -58,7 +47,7 @@ namespace Witter.Services.Data
         {
             var entity = this._likesRepository
                 .All()
-                .FirstOrDefaultAsync(x => x.ParentId == userId && x.WeetId == weetId)
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.WeetId == weetId)
                 .GetAwaiter()
                 .GetResult();
 
@@ -71,7 +60,7 @@ namespace Witter.Services.Data
         {
             var entity = this._likesRepository
                 .All()
-                .FirstOrDefaultAsync(x => x.ParentId == userId && x.WeetId == weetId)
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.WeetId == weetId)
                 .GetAwaiter()
                 .GetResult();
 

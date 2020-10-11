@@ -8,6 +8,7 @@ namespace Witter.Services.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Security.Cryptography.X509Certificates;
     using System.Text;
 
     using Witter.Data.Common.Repositories;
@@ -28,9 +29,9 @@ namespace Witter.Services.Data
         {
             var dbModel = new Weet()
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid().ToString(),
                 Author = user,
-                Content = model.Content
+                Content = model.Content,
             };
 
             await this._weetRepository.AddAsync(dbModel);
@@ -44,8 +45,24 @@ namespace Witter.Services.Data
 
         public async Task Delete(string id)
         {
-            this._weetRepository.Delete(await this.GetById(id));
+            var entity = await this.GetById(id);
+
+            if (entity == null)
+            {
+                return;
+            }
+
+            this._weetRepository.Delete(entity);
             await this._weetRepository.SaveChangesAsync();
+        }
+
+        private async Task<Weet> GetById(string id)
+        {
+            return this._weetRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.Id == id)
+                .GetAwaiter()
+                .GetResult();
         }
 
         public IEnumerable<T> GetAll<T>()
@@ -72,11 +89,6 @@ namespace Witter.Services.Data
                 .FirstOrDefault(x => string.Compare(x.Id.ToString(), Id, StringComparison.OrdinalIgnoreCase) == 0);
 
             return result;
-        }
-
-        private async Task<Weet> GetById(string id)
-        {
-            return await this._weetRepository.All().FirstOrDefaultAsync(x => x.Id.ToString() == id);
         }
     }
 }

@@ -292,17 +292,19 @@ namespace Witter.Data.Migrations
 
             modelBuilder.Entity("Witter.Data.Models.UserFollowers", b =>
                 {
-                    b.Property<string>("ParentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FollowerId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("FollowerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FollowingId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsFollowing")
                         .HasColumnType("bit");
@@ -310,16 +312,19 @@ namespace Witter.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ParentId", "FollowerId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("FollowerId");
+
+                    b.HasIndex("FollowingId");
 
                     b.ToTable("UserFollowers");
                 });
 
             modelBuilder.Entity("Witter.Data.Models.Weet", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AuthorId")
                         .HasColumnType("nvarchar(450)");
@@ -350,17 +355,11 @@ namespace Witter.Data.Migrations
 
             modelBuilder.Entity("Witter.Data.Models.WeetLikes", b =>
                 {
-                    b.Property<string>("ParentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("WeetId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
@@ -368,7 +367,19 @@ namespace Witter.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ParentId", "WeetId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WeetId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("WeetId");
 
                     b.ToTable("WeetLikes");
                 });
@@ -424,11 +435,41 @@ namespace Witter.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Witter.Data.Models.UserFollowers", b =>
+                {
+                    b.HasOne("Witter.Data.Models.ApplicationUser", "Follower")
+                        .WithMany("Followers")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Witter.Data.Models.ApplicationUser", "Following")
+                        .WithMany("Following")
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Witter.Data.Models.Weet", b =>
                 {
                     b.HasOne("Witter.Data.Models.ApplicationUser", "Author")
                         .WithMany("Weets")
                         .HasForeignKey("AuthorId");
+                });
+
+            modelBuilder.Entity("Witter.Data.Models.WeetLikes", b =>
+                {
+                    b.HasOne("Witter.Data.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Witter.Data.Models.Weet", "Weet")
+                        .WithMany("Likes")
+                        .HasForeignKey("WeetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

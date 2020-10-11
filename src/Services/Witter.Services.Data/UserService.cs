@@ -34,9 +34,6 @@ namespace Witter.Services.Data
                 return null;
             }
 
-            entity.Followers = this._followerService.GetFollowersCount(entity.Id);
-            entity.Following = this._followerService.GetFollowingCount(entity.Id);
-
             return entity;
         }
     }

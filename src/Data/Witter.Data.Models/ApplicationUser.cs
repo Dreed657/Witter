@@ -16,6 +16,10 @@ namespace Witter.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+
+            this.Weets = new HashSet<Weet>();
+            this.Followers = new HashSet<UserFollowers>();
+            this.Following = new HashSet<UserFollowers>();
         }
 
         public string FirstName { get; set; }
@@ -25,26 +29,22 @@ namespace Witter.Data.Models
         public DateTime BirthDate { get; set; }
 
         public string Tag { get; set; }
-        
+
         public string AboutMe { get; set; }
 
-        /// <summary>
-        ///   TODO: Add Country and tables for them
-        /// 
-        ///   https://camo.githubusercontent.com/4497fd270be74438353a9ae531323308f8a6e9a1/68747470733a2f2f7265732e636c6f7564696e6172792e636f6d2f64766c7731656870612f696d6167652f75706c6f61642f76313539323433303033382f4469616772616d5f70736571676b2e706e67
-        /// </summary>
-
-        public ICollection<Weet> Weets { get; set; }
-
-        // Audit info
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
 
-        // Deletable entity
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+
+        public virtual ICollection<Weet> Weets { get; set; }
+
+        public virtual ICollection<UserFollowers> Followers { get; set; }
+
+        public virtual ICollection<UserFollowers> Following { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 

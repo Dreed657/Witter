@@ -11,6 +11,7 @@
 
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using System.Security.Cryptography.X509Certificates;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
@@ -62,6 +63,14 @@
 
             var entityTypes = builder.Model.GetEntityTypes().ToList();
 
+            builder.Entity<ApplicationUser>()
+               .HasMany(x => x.Followers)
+               .WithOne(x => x.Follower);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(x => x.Following)
+                .WithOne(x => x.Following);
+
             // Set global query filter for not deleted entities only
             var deletableEntityTypes = entityTypes
                 .Where(et => et.ClrType != null && typeof(IDeletableEntity).IsAssignableFrom(et.ClrType));
@@ -78,9 +87,6 @@
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
-
-            builder.Entity<UserFollowers>(e => e.HasKey(x => new {x.ParentId, x.FollowerId}));
-            builder.Entity<WeetLikes>(e => e.HasKey(x => new { x.ParentId, x.WeetId }));
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

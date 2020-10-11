@@ -24,7 +24,7 @@
                 var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                 var weet = new Weet()
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid().ToString(),
                     Author = user,
                     Content = new string(
                         Enumerable.Repeat(chars, 200)

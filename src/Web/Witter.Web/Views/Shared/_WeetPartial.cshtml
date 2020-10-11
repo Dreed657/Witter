@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Witter.Data.Models
+@using Witter.Services.Data.Contracts
+@model Witter.Web.ViewModels.Weets.FullWeetViewModel
+@inject UserManager<ApplicationUser> UserManager
+@inject ILikeService likeService;
+
+<div class="card border-0" id=@Model.Id>
+    <div class="card-body border-bottom">
+        <h6 class="card-subtitle mb-2 text-muted">
+            By:
+            @Html.ActionLink(@Model.Author.UserName, "Index", "Profile", new { username = @Model.Author.UserName }, null) at
+            @Model.Author.Tag (@Model.CreatedOn)
+        </h6>
+        <p class="card-text">@Model.Content</p>
+        <p>@Model.CreatedOnOffset</p>
+        @if (await this.UserManager.GetUserAsync(this.User) == @Model.Author)
+        {
+            <div class="btn-group dropleft">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropleft
+                </button>
+                <div class="dropdown-menu">
+                    @Html.ActionLink("Edit", "Update", "Weets", new { id = @Model.Id }, new { @class = "dropdown-item" })
+                    @Html.ActionLink("Delete", "Delete", "Weets", new { id = @Model.Id }, new { @class = "dropdown-item" })
+                </div>
+            </div>
+        }
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            @if (!this.likeService.IsLiked(this.UserManager.GetUserAsync(this.User).GetAwaiter().GetResult().Id, @Model.Id.ToString()))
+            {
+                @Html.ActionLink("Like (" + @Model.LikeCount + ")", "Like", "Weets", new { id = @Model.Id }, new { @class = "btn btn-info" })
+            }
+            else
+            {
+                @Html.ActionLink("DisLike (" + @Model.LikeCount + ")", "DisLike", "Weets", new { id = @Model.Id }, new { @class = "btn btn-danger" })
+            }
+        }
+        @Html.ActionLink("See more.. ", "Detail", "Weets", new { id = @Model.Id }, new { @class = "btn btn-warning" })
+    </div>
+</div>

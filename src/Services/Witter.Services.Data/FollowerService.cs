@@ -17,37 +17,17 @@ namespace Witter.Services.Data
             this.followerRepository = repository;
         }
 
-        public int GetFollowersCount(string userId)
-        {
-            return this.followerRepository
-                .All()
-                .Where(x => x.IsFollowing)
-                .CountAsync(x => x.FollowerId == userId)
-                .GetAwaiter()
-                .GetResult();
-        }
-
-        public int GetFollowingCount(string userId)
-        {
-            return this.followerRepository
-                .All()
-                .Where(x => x.IsFollowing)
-                .CountAsync(x => x.ParentId == userId)
-                .GetAwaiter()
-                .GetResult();
-        }
-
         public async Task Follow(string parentId, string followerId)
         {
             var entity = this.followerRepository
                 .All()
-                .FirstOrDefault(x => x.ParentId == parentId && x.FollowerId == followerId);
+                .FirstOrDefault(x => x.FollowingId == parentId && x.FollowerId == followerId);
 
             if (entity == null)
             {
                 var insertEntity = new UserFollowers()
                 {
-                    ParentId = parentId,
+                    FollowingId = parentId,
                     FollowerId = followerId,
                     IsFollowing = true,
                 };
@@ -66,7 +46,7 @@ namespace Witter.Services.Data
         {
             var entity = this.followerRepository
                 .All()
-                .FirstOrDefaultAsync(x => x.ParentId == parentId && x.FollowerId == followerId)
+                .FirstOrDefaultAsync(x => x.FollowingId == parentId && x.FollowerId == followerId)
                 .GetAwaiter()
                 .GetResult();
 
@@ -81,7 +61,7 @@ namespace Witter.Services.Data
         {
             var entity = this.followerRepository
                 .All()
-                .FirstOrDefaultAsync(x => x.ParentId == parentId && x.FollowerId == followerId)
+                .FirstOrDefaultAsync(x => x.FollowingId == parentId && x.FollowerId == followerId)
                 .GetAwaiter()
                 .GetResult();
 
