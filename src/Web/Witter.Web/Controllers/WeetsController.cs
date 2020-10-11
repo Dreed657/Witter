@@ -25,15 +25,6 @@ namespace Witter.Web.Controllers
             this._likeService = likeService;
         }
 
-        [Route("Feed")]
-        public IActionResult Index()
-        {
-            var weets = this._weetsService.Feed();
-
-            return this.View(weets);
-        }
-
-        // TODO: Redirect to page of action
         [Authorize]
         public async Task<IActionResult> Create(WeetCreateModel model)
         {
@@ -41,7 +32,7 @@ namespace Witter.Web.Controllers
 
             await this._weetsService.Create(model, user);
 
-            return this.RedirectToAction(nameof(this.Index));
+            return this.Redirect("/");
         }
 
         public IActionResult Detail(string id)

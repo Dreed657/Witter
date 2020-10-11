@@ -58,6 +58,17 @@
             </div>
         </div>
     </div>
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <div class="border-bottom">
+            <form method="post" asp-controller="Weets" asp-action="Create">
+                <label for="weet">Weet</label>
+                <input type="text" class="form-control" name="Content" placeholder="Weet here">
+                <button type="submit" class="btn btn-primary m-2">Submit</button>
+            </form>
+        </div>
+    }
+
     @if (!Model.Weets.Any())
     {
         <h3 class="text-center mt-3">You don't have any posts.</h3>

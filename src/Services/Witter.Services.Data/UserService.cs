@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using Witter.Data.Common.Repositories;
 using Witter.Data.Models;
 using Witter.Services.Data.Contracts;
@@ -13,12 +17,9 @@ namespace Witter.Services.Data
     {
         private readonly IRepository<ApplicationUser> _userRepository;
 
-        private readonly IFollowerService _followerService;
-
-        public UserService(IRepository<ApplicationUser> repository, IFollowerService followerService)
+        public UserService(IRepository<ApplicationUser> repository)
         {
             this._userRepository = repository;
-            this._followerService = followerService;
         }
 
         public ProfileViewModel GetProfileByUser(string username)
@@ -35,6 +36,28 @@ namespace Witter.Services.Data
             }
 
             return entity;
+        }
+
+        public IEnumerable<string> GetAllUserFollowing(string userId)
+        {
+            var user = this._userRepository
+                .All()
+                .Include(x => x.Following)
+                .FirstOrDefault(x => x.Id == userId)
+                .Following
+                .Where(x => x.IsFollowing)
+                .Select(x => x.FollowerId);
+
+            return this._userRepository
+                .All()
+                .Where(x => user.Contains(x.Id))
+                .Select(x => x.Id)
+                .ToList();
+        }
+
+        public ApplicationUser GetUserById(string userId)
+        {
+            return this._userRepository.All().FirstOrDefaultAsync(x => x.Id == userId).GetAwaiter().GetResult();
         }
     }
 }

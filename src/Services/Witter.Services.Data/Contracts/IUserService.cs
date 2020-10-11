@@ -1,4 +1,5 @@
-﻿using Witter.Data.Models;
+﻿using System.Collections.Generic;
+using Witter.Data.Models;
 using Witter.Web.ViewModels.Profile;
 
 namespace Witter.Services.Data.Contracts
@@ -6,5 +7,9 @@ namespace Witter.Services.Data.Contracts
     public interface IUserService
     {
         ProfileViewModel GetProfileByUser(string username);
+
+        IEnumerable<string> GetAllUserFollowing(string userId);
+
+        ApplicationUser GetUserById(string userId);
     }
 }

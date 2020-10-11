@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Witter.Data.Models;
 using Witter.Services.Mapping;
@@ -44,10 +45,10 @@ namespace Witter.Web.ViewModels.Profile
                 .ForMember(x => x.CreatedOnOffset, opt => opt.MapFrom(y => ViewModelConstants.TimeConverter(y.CreatedOn)));
 
             configuration.CreateMap<ApplicationUser, ProfileViewModel>()
-                .ForMember(x => x.FollowersCount, opt => opt.MapFrom(y => y.Followers.Count));
+                .ForMember(x => x.FollowersCount, opt => opt.MapFrom(y => y.Followers.Where(x => x.IsFollowing).Count()));
 
             configuration.CreateMap<ApplicationUser, ProfileViewModel>()
-                .ForMember(x => x.FollowingCount, opt => opt.MapFrom(y => y.Following.Count));
+                .ForMember(x => x.FollowingCount, opt => opt.MapFrom(y => y.Following.Where(x => x.IsFollowing).Count()));
         }
     }
 }

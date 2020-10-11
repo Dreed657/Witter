@@ -8,21 +8,26 @@ namespace Witter.Services.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Net.Http.Headers;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
 
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
     using Witter.Services.Contracts;
+    using Witter.Services.Data.Contracts;
     using Witter.Web.ViewModels.Weets;
 
     public class WeetsService : IWeetsService
     {
         private readonly IDeletableEntityRepository<Weet> _weetRepository;
 
-        public WeetsService(IDeletableEntityRepository<Weet> repository)
+        private readonly IUserService _userService;
+
+        public WeetsService(IDeletableEntityRepository<Weet> repository, IUserService userService)
         {
             this._weetRepository = repository;
+            this._userService = userService;
         }
 
         public async Task Create(WeetCreateModel model, ApplicationUser user)
@@ -70,11 +75,23 @@ namespace Witter.Services.Data
             return this._weetRepository.All().To<T>().ToList();
         }
 
-        public IEnumerable<FullWeetViewModel> Feed()
+        public IEnumerable<FullWeetViewModel> Explore()
         {
             return this._weetRepository
                 .All()
                 .Where(x => !x.IsDeleted)
+                .OrderByDescending(x => x.CreatedOn)
+                .To<FullWeetViewModel>()
+                .ToList();
+        }
+
+        public IEnumerable<FullWeetViewModel> Feed(string userId)
+        {
+            var followingUsersIds = this._userService.GetAllUserFollowing(userId);
+
+            return this._weetRepository
+                .All()
+                .Where(x => followingUsersIds.Contains(x.Author.Id))
                 .OrderByDescending(x => x.CreatedOn)
                 .To<FullWeetViewModel>()
                 .ToList();

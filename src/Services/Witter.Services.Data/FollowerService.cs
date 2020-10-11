@@ -12,10 +12,16 @@ namespace Witter.Services.Data
     {
         private readonly IRepository<UserFollowers> followerRepository;
 
-        public FollowerService(IRepository<UserFollowers> repository)
+        private readonly IUserService userService;
+
+        public FollowerService(IRepository<UserFollowers> repository, IUserService userService)
         {
             this.followerRepository = repository;
+            this.userService = userService;
         }
+
+        // TODO: Properties are mapping in reverse 
+        // Data models for userFollowers table should change.
 
         public async Task Follow(string parentId, string followerId)
         {
@@ -25,10 +31,13 @@ namespace Witter.Services.Data
 
             if (entity == null)
             {
+                var parent = this.userService.GetUserById(parentId);
+                var following = this.userService.GetUserById(followerId);
+
                 var insertEntity = new UserFollowers()
                 {
-                    FollowingId = parentId,
-                    FollowerId = followerId,
+                    Follower = following,
+                    Following = parent,
                     IsFollowing = true,
                 };
 

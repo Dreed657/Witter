@@ -4,7 +4,6 @@
 @model System.Collections.Generic.IEnumerable<Witter.Web.ViewModels.Weets.FullWeetViewModel>
 @inject UserManager<ApplicationUser> UserManager
 @inject ILikeService likeService;
-
 @{
     ViewBag.Title = "Feed";
     Layout = "_Layout";
@@ -14,7 +13,7 @@
     @if (this.User.Identity.IsAuthenticated)
     {
         <div class="border-bottom">
-            <form method="post" asp-action="Create">
+            <form method="post" asp-controller="Weets" asp-action="Create">
                 <label for="weet">Weet</label>
                 <input type="text" class="form-control" name="Content" placeholder="Weet here">
                 <button type="submit" class="btn btn-primary m-2">Submit</button>
@@ -22,8 +21,15 @@
         </div>
     }
 
-    @foreach (var weet in Model)
+    @if (Model.Any())
     {
-        @Html.Partial("_WeetPartial", weet);
+        @foreach (var weet in Model)
+        {
+            @Html.PartialAsync("_WeetPartial", weet).GetAwaiter().GetResult();
+        }
+    }
+    else
+    {
+        <h1>Follow somebody!</h1>
     }
 </div>
