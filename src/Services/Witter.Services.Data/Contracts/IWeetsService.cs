@@ -21,6 +21,8 @@ namespace Witter.Services.Contracts
 
         IEnumerable<FullWeetViewModel> Explore();
 
-        FullWeetViewModel Get(string Id);
+        T GetByIdToViewModel<T>(string Id);
+
+        Task<Weet> GetByIdAsync(string id);
     }
 }

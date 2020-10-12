@@ -1,5 +1,29 @@
-﻿@{
+﻿@model System.Collections.Generic.IEnumerable<Witter.Web.ViewModels.Notifications.FullNotificationViewModel>
+
+@{
     ViewBag.Title = "Notifications";
     Layout = "_Layout";
 }
-<h1>Notifications goes here!</h1>
+
+@if (Model.Any())
+{
+    foreach (var notification in Model)
+    {
+        if (notification.Type == Witter.Data.Models.Enums.NotificationType.Like)
+        {
+            <div class="alert alert-primary" role="alert">
+                @notification.SenderUsername liked you post!
+            </div>
+        }
+        else if (notification.Type == Witter.Data.Models.Enums.NotificationType.Follow)
+        {
+            <div class="alert alert-success" role="alert">
+                @notification.SenderUsername followed you!
+            </div>
+        }
+    }
+}
+else
+{
+    <h1>You don't have any new notificaitons.</h1>
+}

@@ -1,8 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Witter.Data.Common.Repositories;
 using Witter.Data.Models;
+using Witter.Data.Models.Enums;
+using Witter.Services.Contracts;
 using Witter.Services.Data.Contracts;
 
 namespace Witter.Services.Data
@@ -10,10 +13,16 @@ namespace Witter.Services.Data
     public class LikeService : ILikeService
     {
         private readonly IRepository<WeetLikes> _likesRepository;
+        private readonly IUserService userService;
+        private readonly INotificationsService notificationsService;
+        private readonly IWeetsService weetService;
 
-        public LikeService(IRepository<WeetLikes> likesRepo)
+        public LikeService(IRepository<WeetLikes> likesRepo, IUserService userService, INotificationsService notificationsService, IWeetsService weetService)
         {
             this._likesRepository = likesRepo;
+            this.userService = userService;
+            this.notificationsService = notificationsService;
+            this.weetService = weetService;
         }
 
         public async Task Like(string userId, string weetId)
@@ -24,12 +33,15 @@ namespace Witter.Services.Data
                 .GetAwaiter()
                 .GetResult();
 
+            var user = this.userService.GetUserById(userId);
+            var weet = await this.weetService.GetByIdAsync(weetId);
+
             if (entity == null)
             {
                 var newEntity = new WeetLikes()
                 {
-                    UserId = userId,
-                    WeetId = weetId,
+                    Weet = weet,
+                    User = user,
                     IsLiked = true,
                 };
 
@@ -40,6 +52,7 @@ namespace Witter.Services.Data
                 entity.IsLiked = true;
             }
 
+            await this.notificationsService.AddNotificationAsync(user, weet.Author, NotificationType.Like);
             await this._likesRepository.SaveChangesAsync();
         }
 

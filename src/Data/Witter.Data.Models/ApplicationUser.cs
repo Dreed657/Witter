@@ -20,6 +20,7 @@ namespace Witter.Data.Models
             this.Weets = new HashSet<Weet>();
             this.Followers = new HashSet<UserFollowers>();
             this.Following = new HashSet<UserFollowers>();
+            this.Notifications = new HashSet<Notification>();
         }
 
         public string FirstName { get; set; }
@@ -45,6 +46,8 @@ namespace Witter.Data.Models
         public virtual ICollection<UserFollowers> Followers { get; set; }
 
         public virtual ICollection<UserFollowers> Following { get; set; }
+
+        public virtual ICollection<Notification> Notifications { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Witter.Data.Common.Repositories;
 using Witter.Data.Models;
+using Witter.Data.Models.Enums;
 using Witter.Services.Data.Contracts;
 
 namespace Witter.Services.Data
@@ -14,10 +15,13 @@ namespace Witter.Services.Data
 
         private readonly IUserService userService;
 
-        public FollowerService(IRepository<UserFollowers> repository, IUserService userService)
+        private readonly INotificationsService notificationsService;
+
+        public FollowerService(IRepository<UserFollowers> repository, IUserService userService, INotificationsService notificationsService)
         {
             this.followerRepository = repository;
             this.userService = userService;
+            this.notificationsService = notificationsService;
         }
 
         // TODO: Properties are mapping in reverse 
@@ -28,12 +32,11 @@ namespace Witter.Services.Data
             var entity = this.followerRepository
                 .All()
                 .FirstOrDefault(x => x.FollowingId == parentId && x.FollowerId == followerId);
+            var parent = this.userService.GetUserById(parentId);
+            var following = this.userService.GetUserById(followerId);
 
             if (entity == null)
             {
-                var parent = this.userService.GetUserById(parentId);
-                var following = this.userService.GetUserById(followerId);
-
                 var insertEntity = new UserFollowers()
                 {
                     Follower = following,
@@ -48,6 +51,7 @@ namespace Witter.Services.Data
                 entity.IsFollowing = true;
             }
 
+            await this.notificationsService.AddNotificationAsync(following, parent, NotificationType.Follow);
             await this.followerRepository.SaveChangesAsync();
         }
 

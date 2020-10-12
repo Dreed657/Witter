@@ -33,6 +33,8 @@
 
         public DbSet<WeetLikes> WeetLikes { get; set; }
 
+        public DbSet<Notification> Notifications { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -70,6 +72,10 @@
             builder.Entity<ApplicationUser>()
                 .HasMany(x => x.Following)
                 .WithOne(x => x.Following);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(x => x.Notifications)
+                .WithOne(x => x.Revicer);
 
             // Set global query filter for not deleted entities only
             var deletableEntityTypes = entityTypes

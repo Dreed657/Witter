@@ -50,7 +50,7 @@ namespace Witter.Services.Data
 
         public async Task Delete(string id)
         {
-            var entity = await this.GetById(id);
+            var entity = await this.GetByIdAsync(id);
 
             if (entity == null)
             {
@@ -59,15 +59,6 @@ namespace Witter.Services.Data
 
             this._weetRepository.Delete(entity);
             await this._weetRepository.SaveChangesAsync();
-        }
-
-        private async Task<Weet> GetById(string id)
-        {
-            return this._weetRepository
-                .All()
-                .FirstOrDefaultAsync(x => x.Id == id)
-                .GetAwaiter()
-                .GetResult();
         }
 
         public IEnumerable<T> GetAll<T>()
@@ -97,15 +88,21 @@ namespace Witter.Services.Data
                 .ToList();
         }
 
-        public FullWeetViewModel Get(string Id)
-        {
-            var result = this._weetRepository
-                .All()
-                .To<FullWeetViewModel>()
-                .ToList()
-                .FirstOrDefault(x => string.Compare(x.Id.ToString(), Id, StringComparison.OrdinalIgnoreCase) == 0);
+        // TODO: Fix posible momory leak;
 
-            return result;
+        public T GetByIdToViewModel<T>(string Id)
+        {
+            return (T)this._weetRepository
+                .All()
+                .Where(x => x.Id == Id)
+                .To<T>()
+                .ToList()
+                .Take(1);
+        }
+
+        public async Task<Weet> GetByIdAsync(string id)
+        {
+            return await this._weetRepository.All().Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

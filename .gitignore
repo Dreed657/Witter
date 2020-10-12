@@ -355,5 +355,7 @@ MigrationBackup/
 # Custom ignores
 **/wwwroot/lib/
 appsettings.*
+appsettings.json
 *.min.css
 *.min.js
+/src/Web/Witter.Web/appsettings.json
