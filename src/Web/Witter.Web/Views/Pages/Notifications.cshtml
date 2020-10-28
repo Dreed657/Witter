@@ -13,12 +13,14 @@
         {
             <div class="alert alert-primary" role="alert">
                 @notification.SenderUsername liked you post!
+                On: @notification.CreatedOnToString
             </div>
         }
         else if (notification.Type == Witter.Data.Models.Enums.NotificationType.Follow)
         {
             <div class="alert alert-success" role="alert">
                 @notification.SenderUsername followed you!
+                On: @notification.CreatedOnToString
             </div>
         }
     }

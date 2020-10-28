@@ -51,7 +51,7 @@ namespace Witter.Services.Data
                 entity.IsFollowing = true;
             }
 
-            await this.notificationsService.AddNotificationAsync(following, parent, NotificationType.Follow);
+            await this.notificationsService.AddNotificationAsync(parent, following, NotificationType.Follow);
             await this.followerRepository.SaveChangesAsync();
         }
 

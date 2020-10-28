@@ -35,18 +35,19 @@ namespace Witter.Web.Controllers
             return this.Redirect("/");
         }
 
+        [HttpGet("Details")]
         public async Task<IActionResult> Detail(string id)
         {
             if (id == null)
             {
-                return this.RedirectToAction("NotFound", "Home");
+                return this.Redirect("/");
             }
 
-            var weet = await this._weetsService.GetByIdAsync(id);
+            var weet = this._weetsService.GetByIdToViewModel<FullWeetViewModel>(id);
 
             if (weet == null)
             {
-                return this.RedirectToAction("NotFound", "Home");
+                return this.Redirect("/");
             }
 
             return this.View(weet);

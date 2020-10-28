@@ -42,7 +42,7 @@ namespace Witter.Web.ViewModels.Profile
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<ApplicationUser, ProfileViewModel>()
-                .ForMember(x => x.CreatedOnOffset, opt => opt.MapFrom(y => ViewModelConstants.TimeConverter(y.CreatedOn)));
+                .ForMember(x => x.CreatedOnOffset, opt => opt.MapFrom(y => y.CreatedOn.ToString()));
 
             configuration.CreateMap<ApplicationUser, ProfileViewModel>()
                 .ForMember(x => x.FollowersCount, opt => opt.MapFrom(y => y.Followers.Where(x => x.IsFollowing).Count()));

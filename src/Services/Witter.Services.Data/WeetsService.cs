@@ -8,9 +8,6 @@ namespace Witter.Services.Data
 {
     using System;
     using System.Collections.Generic;
-    using System.Net.Http.Headers;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
 
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
@@ -88,16 +85,13 @@ namespace Witter.Services.Data
                 .ToList();
         }
 
-        // TODO: Fix posible momory leak;
-
         public T GetByIdToViewModel<T>(string Id)
         {
             return (T)this._weetRepository
                 .All()
                 .Where(x => x.Id == Id)
                 .To<T>()
-                .ToList()
-                .Take(1);
+                .FirstOrDefault();
         }
 
         public async Task<Weet> GetByIdAsync(string id)

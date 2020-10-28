@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using System;
+using System.Globalization;
 using Witter.Data.Models;
 using Witter.Data.Models.Enums;
 using Witter.Services.Mapping;
@@ -12,6 +14,10 @@ namespace Witter.Web.ViewModels.Notifications
         public string SenderUsername { get; set; }
 
         public string RevicerUsername { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public string CreatedOnToString => this.CreatedOn.ToString(CultureInfo.GetCultureInfo("bg-BG"));
 
         public void CreateMappings(IProfileExpression configuration)
         {
