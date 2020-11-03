@@ -17,15 +17,12 @@ namespace Witter.Web.ViewModels.Weets
 
         public int LikeCount { get; set; }
 
-        public string CreatedOnOffset { get; set; }
+        public string CreatedOnOffset => ViewModelConstants.TimeConverter(TimeZoneInfo.ConvertTimeFromUtc(this.CreatedOn, TimeZoneInfo.Local));
 
         public DateTime CreatedOn { get; set; }
-        
+
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<Weet, FullWeetViewModel>().ForMember(
-                x => x.CreatedOnOffset, opt => opt.MapFrom(y => y.CreatedOn.ToString()));
-
             configuration.CreateMap<Weet, FullWeetViewModel>().ForMember(
                 x => x.LikeCount, opt => opt.MapFrom(y => y.Likes.Count(b => b.IsLiked)));
         }

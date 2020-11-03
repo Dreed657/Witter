@@ -14,7 +14,7 @@ namespace Witter.Web.ViewModels.Profile
         public ProfileViewModel()
         {
             this.Weets = new HashSet<FullWeetViewModel>();
-            this.CreatedOnOffset = "No Data";
+            //this.CreatedOnOffset = "No Date";
         }
 
         public string Id { get; set; }
@@ -45,10 +45,10 @@ namespace Witter.Web.ViewModels.Profile
                 .ForMember(x => x.CreatedOnOffset, opt => opt.MapFrom(y => y.CreatedOn.ToString()));
 
             configuration.CreateMap<ApplicationUser, ProfileViewModel>()
-                .ForMember(x => x.FollowersCount, opt => opt.MapFrom(y => y.Followers.Where(x => x.IsFollowing).Count()));
+                .ForMember(x => x.FollowersCount, opt => opt.MapFrom(y => y.Followers.Where(x => x.IsFollowing).Where(x => x.FollowerId == y.Id).Count()));
 
             configuration.CreateMap<ApplicationUser, ProfileViewModel>()
-                .ForMember(x => x.FollowingCount, opt => opt.MapFrom(y => y.Following.Where(x => x.IsFollowing).Count()));
+                .ForMember(x => x.FollowingCount, opt => opt.MapFrom(y => y.Following.Where(x => x.IsFollowing).Where(x => x.FollowingId == y.Id).Count()));
         }
     }
 }
