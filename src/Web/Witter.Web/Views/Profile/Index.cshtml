@@ -30,22 +30,22 @@
                             <i class="glyphicon glyphicon-envelope"></i>@Model.UserName@@test.com
                             <br />
                             <span>Created On:</span>
-                            <i class="glyphicon glyphicon-gift"></i>@Model.CreatedOnOffset
+                            <i class="glyphicon glyphicon-gift"></i>@TimeZoneInfo.ConvertTimeFromUtc(Model.CreatedOn, TimeZoneInfo.Local)
                         </p>
                         @if (this.UserManager.GetUserAsync(this.User).Result.Id != @Model.Id)
                         {
                             @if (!this.followerService.IsFollowing(this.UserManager.GetUserAsync(this.User).Result.Id, @Model.Id))
                             {
-                                @Html.ActionLink("Follow", "Follow", "Profile", new { id = @Model.Id }, new { @class = "btn btn-success" })
+                                <a asp-controller="Profile" asp-action="Follow" asp-route-Id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-success">Follow</a>
                             }
                             else
                             {
-                                @Html.ActionLink("UnFollow", "UnFollow", "Profile", new { id = @Model.Id }, new { @class = "btn btn-danger" })
+                                <a asp-controller="Profile" asp-action="UnFollow" asp-route-Id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-danger">UnFollow</a>
                             }
                         }
                         else
                         {
-                            @Html.ActionLink("Settings", "index", "Settings", null, new { @class = "btn btn-warning" })
+                            <a asp-controller="Settings" asp-action="index" class="btn btn-warning">Settings</a>
                         }
                     </div>
                     <div class="col">
@@ -58,12 +58,16 @@
             </div>
         </div>
     </div>
+
+    @*Check if profile is mine*@
+
     @if (this.User.Identity.IsAuthenticated)
     {
         <div class="border-bottom">
             <form method="post" asp-controller="Weets" asp-action="Create">
                 <label for="weet">Weet</label>
                 <input type="text" class="form-control" name="Content" placeholder="Weet here">
+                <input type="text" name="returnUrl" value="@this.Context.Request.Path.Value" hidden />
                 <button type="submit" class="btn btn-primary m-2">Submit</button>
             </form>
         </div>
@@ -77,7 +81,7 @@
     {
         @foreach (var weet in Model.Weets.OrderByDescending(x => x.CreatedOn))
         {
-            @Html.Partial("_WeetPartial", weet);
+            <partial name="_WeetPartial" model="weet"/>
         }
     }
 </div>

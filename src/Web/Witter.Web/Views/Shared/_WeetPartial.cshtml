@@ -9,11 +9,10 @@
     <div class="card-body border-bottom">
         <h6 class="card-subtitle mb-2 text-muted">
             By:
-            @Html.ActionLink(@Model.Author.UserName, "Index", "Profile", new { username = @Model.Author.UserName }, null) at
-            @Model.Author.Tag (@Model.CreatedOn)
+            <a asp-controller="Profile" asp-action="Index" asp-route-username="@Model.Author.UserName">@Model.Author.UserName</a> at
+            @Model.Author.Tag (@Model.CreatedOnOffset)
         </h6>
         <p class="card-text">@Model.Content</p>
-        <p>@Model.CreatedOnOffset</p>
         @if (await this.UserManager.GetUserAsync(this.User) == @Model.Author)
         {
             <div class="btn-group dropleft">
@@ -21,8 +20,8 @@
                     Dropleft
                 </button>
                 <div class="dropdown-menu">
-                    @Html.ActionLink("Edit", "Update", "Weets", new { id = @Model.Id }, new { @class = "dropdown-item" })
-                    @Html.ActionLink("Delete", "Delete", "Weets", new { id = @Model.Id }, new { @class = "dropdown-item" })
+                    <a asp-controller="Weets" asp-action="Update" asp-route-Id="@Model.Id" class="dropdown-item">Edit</a>
+                    <a asp-controller="Weets" asp-action="Delete" asp-route-id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="dropdown-item">Delete</a>
                 </div>
             </div>
         }
@@ -30,13 +29,13 @@
         {
             @if (!this.likeService.IsLiked(this.UserManager.GetUserAsync(this.User).GetAwaiter().GetResult().Id, @Model.Id.ToString()))
             {
-                @Html.ActionLink("Like (" + @Model.LikeCount + ")", "Like", "Weets", new { id = @Model.Id }, new { @class = "btn btn-info" })
+                <a asp-controller="Weets" asp-action="Like" asp-route-id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-info">@("DisLike (" + @Model.LikeCount + ")")</a>
             }
             else
             {
-                @Html.ActionLink("DisLike (" + @Model.LikeCount + ")", "DisLike", "Weets", new { id = @Model.Id }, new { @class = "btn btn-danger" })
+                <a asp-controller="Weets" asp-action="DisLike" asp-route-id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-danger">@("DisLike (" + @Model.LikeCount + ")")</a>
             }
         }
-        @Html.ActionLink("See more.. ", "Detail", "Weets", new { id = @Model.Id }, new { @class = "btn btn-warning" })
+        <a asp-controller="Weets" asp-action="Detail" asp-route-Id="@Model.Id" class="btn btn-warning">See more.. </a>
     </div>
 </div>

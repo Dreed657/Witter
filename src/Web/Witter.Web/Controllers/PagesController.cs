@@ -22,7 +22,7 @@ namespace Witter.Web.Controllers
         }
 
         [Authorize]
-        [Route("Feed")]
+        [HttpGet("Feed")]
         public IActionResult Feed()
         {
             var user = this._userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
@@ -32,7 +32,7 @@ namespace Witter.Web.Controllers
             return this.View(weets);
         }
 
-        [Route("Explore")]
+        [HttpGet("Explore")]
         public IActionResult Explore()
         {
             var weets = this._weetsService.Explore();
@@ -41,6 +41,7 @@ namespace Witter.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet("Notifications")]
         public IActionResult Notifications()
         {
             var user = this._userManager.GetUserAsync(this.User).GetAwaiter().GetResult();

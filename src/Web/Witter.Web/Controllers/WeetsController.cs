@@ -26,13 +26,13 @@ namespace Witter.Web.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Create(WeetCreateModel model)
+        public async Task<IActionResult> Create(WeetCreateModel model, string returnUrl)
         {
             var user = await this._userManager.GetUserAsync(this.User);
 
             await this._weetsService.Create(model, user);
 
-            return this.Redirect("/");
+            return this.Redirect(returnUrl);
         }
 
         [HttpGet("Details")]
@@ -53,30 +53,30 @@ namespace Witter.Web.Controllers
             return this.View(weet);
         }
 
-        public async Task<IActionResult> Like(string id)
+        public async Task<IActionResult> Like(string id, string returnUrl)
         {
             var loggedInUser = await this._userManager.GetUserAsync(this.User);
 
             await this._likeService.Like(loggedInUser.Id, id);
 
-            return this.Redirect("/");
+            return this.Redirect(returnUrl);
         }
 
-        public async Task<IActionResult> DisLike(string id)
+        public async Task<IActionResult> DisLike(string id, string returnUrl)
         {
             var loggedInUser = await this._userManager.GetUserAsync(this.User);
 
             await this._likeService.DisLike(loggedInUser.Id, id);
 
-            return this.Redirect("/");
+            return this.Redirect(returnUrl);
         }
 
         // TODO: Redirect to page of action
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(string id, string returnUrl)
         {
             await this._weetsService.Delete(id);
 
-            return this.Redirect("/");
+            return this.Redirect(returnUrl);
         }
 
         public IActionResult Update(string id)

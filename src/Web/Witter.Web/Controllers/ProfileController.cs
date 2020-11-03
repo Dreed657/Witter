@@ -44,22 +44,22 @@ namespace Witter.Web.Controllers
             return this.View(profileData);
         }
 
-        public async Task<IActionResult> Follow(string id)
+        public async Task<IActionResult> Follow(string id, string returnUrl)
         {
             var loggedInUser = await this._userManager.GetUserAsync(this.User);
 
             await this._followerService.Follow(loggedInUser.Id, id);
 
-            return this.Redirect("/");
+            return this.Redirect(returnUrl);
         }
 
-        public async Task<IActionResult> UnFollow(string id)
+        public async Task<IActionResult> UnFollow(string id, string returnUrl)
         {
             var loggedInUser = await this._userManager.GetUserAsync(this.User);
 
             await this._followerService.UnFollow(loggedInUser.Id, id);
 
-            return this.Redirect("/");
+            return this.Redirect(returnUrl);
         }
     }
 }

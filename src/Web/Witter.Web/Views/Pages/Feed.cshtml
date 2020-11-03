@@ -16,6 +16,7 @@
             <form method="post" asp-controller="Weets" asp-action="Create">
                 <label for="weet">Weet</label>
                 <input type="text" class="form-control" name="Content" placeholder="Weet here">
+                <input type="text" name="returnUrl" value="@this.Context.Request.Path.Value" hidden/>
                 <button type="submit" class="btn btn-primary m-2">Submit</button>
             </form>
         </div>
@@ -25,7 +26,7 @@
     {
         @foreach (var weet in Model)
         {
-            @Html.PartialAsync("_WeetPartial", weet).GetAwaiter().GetResult();
+            <partial name="_WeetPartial" model="weet" />
         }
     }
     else
