@@ -4,33 +4,33 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@this.ViewData["Title"] - @GlobalConstants.SystemName</title>
+    <title>@($"{this.ViewData["Title"]} | {GlobalConstants.SystemName}")</title>
 
     <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <a class="navbar-brand" asp-area="" asp-controller="Weets" asp-action="Index">@GlobalConstants.SystemName</a>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark  border-bottom box-shadow mb-3">
+            <a class="navbar-brand" asp-controller="Pages" asp-action="Feed">@GlobalConstants.SystemName</a>
             <div class="container">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" id="navbarColor02">
                     <ul class="navbar-nav flex-grow-1 justify-content-center">
                         @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>*@
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pages" asp-action="Feed">Feed</a>
+                            <a class="nav-link" asp-area="" asp-controller="Pages" asp-action="Feed">Feed</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pages" asp-action="Explore">Explore</a>
+                            <a class="nav-link" asp-area="" asp-controller="Pages" asp-action="Explore">Explore</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pages" asp-action="Notifications">Notifications</a>
+                            <a class="nav-link" asp-area="" asp-controller="Pages" asp-action="Notifications">Notifications</a>
                         </li>
                     </ul>
                 </div>
@@ -49,79 +49,9 @@
 
 <!-- Footer -->
 <footer class="footer">
-    <hr/>
-    <!-- Footer Links -->
-    <div class="container-fluid text-center text-md-left">
-
-        <!-- Grid row -->
-        <div class="row">
-
-            <!-- Grid column -->
-            <div class="col-md-6 mt-md-0 mt-3">
-
-                <!-- Content -->
-                <h5 class="text-uppercase">Footer Content</h5>
-                <p>Here you can use rows and columns to organize your footer content.</p>
-
-            </div>
-            <!-- Grid column -->
-
-            <hr class="clearfix w-100 d-md-none pb-3">
-
-            <!-- Grid column -->
-            <div class="col-md-3 mb-md-0 mb-3">
-
-                <!-- Links -->
-                <h5 class="text-uppercase">Links</h5>
-
-                <ul class="list-unstyled">
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Settings" asp-action="Index">Settings</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
-                </ul>
-
-            </div>
-            <!-- Grid column -->
-
-            <!-- Grid column -->
-            <div class="col-md-3 mb-md-0 mb-3">
-
-                <!-- Links -->
-                <h5 class="text-uppercase">Links</h5>
-
-                <ul class="list-unstyled">
-                    <li>
-                        <a href="#!">Link 1</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 2</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 3</a>
-                    </li>
-                    <li>
-                        <a href="#!">Link 4</a>
-                    </li>
-                </ul>
-
-            </div>
-            <!-- Grid column -->
-
-        </div>
-        <!-- Grid row -->
-
-    </div>
-    <!-- Footer Links -->
-
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <div class="footer-copyright text-center py-3  border-top border-info">© 2020 Copyright:
         &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
-    <!-- Copyright -->
-
 </footer>
 <!-- Footer -->
 

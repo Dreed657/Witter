@@ -6,11 +6,11 @@
 @inject IFollowerService followerService
 @inject ILikeService likeService
 @{
-    ViewBag.Title = "Profile - (@" + @Model.UserName + ")";
+    ViewBag.Title = $"{Model.UserName}";
 }
 <div class="container">
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 pb-4 border-bottom">
+        <div class="col-xs-12 col-sm-6 col-md-6 pb-4">
             <div class="well well-sm">
                 <div class="row justify-content-between">
                     <div class="col">
@@ -30,7 +30,7 @@
                             <i class="glyphicon glyphicon-envelope"></i>@Model.UserName@@test.com
                             <br />
                             <span>Created On:</span>
-                            <i class="glyphicon glyphicon-gift"></i>@TimeZoneInfo.ConvertTimeFromUtc(Model.CreatedOn, TimeZoneInfo.Local)
+                            <i class="glyphicon glyphicon-gift"></i>@Model.CreatedOnOffset
                         </p>
                         @if (this.UserManager.GetUserAsync(this.User).Result.Id != @Model.Id)
                         {
@@ -61,9 +61,11 @@
 
     @*Check if profile is mine*@
 
-    @if (this.User.Identity.IsAuthenticated)
+    @if (this.User.Identity.IsAuthenticated && this.Model.Id == this.UserManager.GetUserId(this.User))
     {
-        <div class="border-bottom">
+        <hr />
+
+        <div>
             <form method="post" asp-controller="Weets" asp-action="Create">
                 <label for="weet">Weet</label>
                 <input type="text" class="form-control" name="Content" placeholder="Weet here">
@@ -73,15 +75,44 @@
         </div>
     }
 
-    @if (!Model.Weets.Any())
-    {
-        <h3 class="text-center mt-3">You don't have any posts.</h3>
-    }
-    else
-    {
-        @foreach (var weet in Model.Weets.OrderByDescending(x => x.CreatedOn))
-        {
-            <partial name="_WeetPartial" model="weet"/>
-        }
-    }
+    <hr />
+
+    <div class="mt-2 nav-justified">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="feed-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="home"
+                   aria-selected="true">Feed</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="liked-tab" data-toggle="tab" href="#liked" role="tab" aria-controls="liked" aria-selected="false">Liked</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="feed" role="tabpanel" aria-labelledby="feed-tab">
+            @if (!Model.Weets.Any())
+            {
+                <h3 class="text-center mt-3">You don't have any posts.</h3>
+            }
+            else
+            {
+                @foreach (var weet in Model.Weets.OrderByDescending(x => x.CreatedOn))
+                {
+                    <partial name="_WeetPartial" model="weet" />
+                }
+            }
+        </div>
+        <div class="tab-pane fade" id="liked" role="tabpanel" aria-labelledby="liked-tab">
+            Food truck fixie
+            locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit,
+            blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee.
+            Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum
+            PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS
+            salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit,
+            sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester
+            stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+        </div>
+    </div>
+
+    
 </div>

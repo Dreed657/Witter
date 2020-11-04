@@ -44,4 +44,10 @@
     <ProjectReference Include="..\Witter.Web.Infrastructure\Witter.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\Witter.Web.ViewModels\Witter.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

@@ -1,18 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using Witter.Data.Common.Repositories;
-using Witter.Data.Models;
-using Witter.Services.Data.Contracts;
-using Witter.Services.Mapping;
-using Witter.Web.ViewModels.Profile;
-
-namespace Witter.Services.Data
+﻿namespace Witter.Services.Data
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Security.Cryptography.X509Certificates;
+
+    using Microsoft.EntityFrameworkCore;
+    using Witter.Data.Common.Repositories;
+    using Witter.Data.Models;
+    using Witter.Services.Data.Contracts;
+    using Witter.Services.Mapping;
+    using Witter.Web.ViewModels.Profile;
+
     public class UserService : IUserService
     {
         private readonly IRepository<ApplicationUser> _userRepository;

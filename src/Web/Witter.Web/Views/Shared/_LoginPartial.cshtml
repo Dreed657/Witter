@@ -8,29 +8,28 @@
     @if (this.SignInManager.IsSignedIn(this.User))
     {
         <li class="nav-item">
-            @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @(UserManager.GetUserAsync(this.User).Result.UserName)!</a>*@
-            @Html.ActionLink("Hello " + UserManager.GetUserAsync(this.User).Result.UserName, "Index", "Profile", new { username = UserManager.GetUserAsync(this.User).Result.UserName }, new { @class = "nav-link text-dark" })
-
+            <a class="nav-link" asp-controller="Profile" asp-action="Index" asp-route-username="@UserManager.GetUserAsync(this.User).Result.UserName" title="Manage">Hello @(UserManager.GetUserAsync(this.User).Result.UserName)!</a>
+            @*@Html.ActionLink("Hello " + UserManager.GetUserAsync(this.User).Result.UserName, "Index", "Profile", new { username = UserManager.GetUserAsync(this.User).Result.UserName }, new { @class = "nav-link" })*@
         </li>
         if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
+                <a class="nav-link" asp-area="Administration" asp-controller="Dashboard" asp-action="Index" title="Admin">Admin</a>
             </li>
         }
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@(this.Url.Action("Index", "Home", new { area = string.Empty }))">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                <button type="submit" class="nav-link btn btn-link">Logout</button>
             </form>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
 </ul>

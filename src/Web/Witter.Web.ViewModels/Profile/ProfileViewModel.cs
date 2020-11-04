@@ -14,7 +14,6 @@ namespace Witter.Web.ViewModels.Profile
         public ProfileViewModel()
         {
             this.Weets = new HashSet<FullWeetViewModel>();
-            //this.CreatedOnOffset = "No Date";
         }
 
         public string Id { get; set; }
@@ -35,15 +34,12 @@ namespace Witter.Web.ViewModels.Profile
 
         public DateTime CreatedOn { get; set; }
 
-        public string CreatedOnOffset { get; set; }
+        public string CreatedOnOffset => ViewModelConstants.TimeConverter(TimeZoneInfo.ConvertTimeFromUtc(this.CreatedOn, TimeZoneInfo.Local));
 
         public ICollection<FullWeetViewModel> Weets { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
-            configuration.CreateMap<ApplicationUser, ProfileViewModel>()
-                .ForMember(x => x.CreatedOnOffset, opt => opt.MapFrom(y => y.CreatedOn.ToString()));
-
             configuration.CreateMap<ApplicationUser, ProfileViewModel>()
                 .ForMember(x => x.FollowersCount, opt => opt.MapFrom(y => y.Followers.Where(x => x.IsFollowing).Where(x => x.FollowerId == y.Id).Count()));
 
