@@ -66,11 +66,11 @@
 
             builder.Entity<ApplicationUser>()
                .HasMany(x => x.Followers)
-               .WithOne(x => x.Follower);
+               .WithOne(x => x.Revicer);
 
             builder.Entity<ApplicationUser>()
                 .HasMany(x => x.Following)
-                .WithOne(x => x.Following);
+                .WithOne(x => x.Sender);
 
             builder.Entity<ApplicationUser>()
                 .HasMany(x => x.Notifications)

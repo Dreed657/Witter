@@ -359,3 +359,4 @@ appsettings.json
 *.min.css
 *.min.js
 /src/Web/Witter.Web/appsettings.json
+/src/Web/Witter.Web/appsettings.development.json

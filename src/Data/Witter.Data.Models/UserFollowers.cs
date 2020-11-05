@@ -4,23 +4,30 @@ using Witter.Data.Common.Models;
 
 namespace Witter.Data.Models
 {
-    public class UserFollowers : BaseModel<string>
+    public class UserFollowers : IDeletableEntity
     {
         public UserFollowers()
         {
             this.Id = Guid.NewGuid().ToString();
         }
 
-        [Required]
-        public string FollowerId { get; set; }
-
-        public virtual ApplicationUser Follower { get; set; }
+        [Key]
+        public string Id { get; set; }
 
         [Required]
-        public string FollowingId { get; set; }
+        public string SenderId { get; set; }
 
-        public virtual ApplicationUser Following { get; set; }
+        public virtual ApplicationUser Sender { get; set; }
+
+        [Required]
+        public string RevicerId { get; set; }
+
+        public virtual ApplicationUser Revicer { get; set; }
 
         public bool IsFollowing { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedOn { get; set; }
     }
 }
