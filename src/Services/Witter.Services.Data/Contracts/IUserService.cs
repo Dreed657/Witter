@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Witter.Data.Models;
 using Witter.Web.ViewModels.Profile;
+using Witter.Web.ViewModels.Users;
 
 namespace Witter.Services.Data.Contracts
 {
@@ -11,5 +12,9 @@ namespace Witter.Services.Data.Contracts
         IEnumerable<string> GetAllUserFollowing(string userId);
 
         ApplicationUser GetUserById(string userId);
+
+        UserFollowerViewModel GetAllFollowers(string Id);
+
+        UserFollowerViewModel GetAllFollowing(string Id);
     }
 }

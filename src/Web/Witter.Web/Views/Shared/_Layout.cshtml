@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark  border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <a class="navbar-brand" asp-controller="Pages" asp-action="Feed">@GlobalConstants.SystemName</a>
             <div class="container">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -39,13 +39,10 @@
         </nav>
     </header>
     
-    <div class="container">
+    <main role="main">
         <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-           
-            @this.RenderBody()
-        </main>
-    </div>
+        @this.RenderBody()
+    </main>
 
 <!-- Footer -->
 <footer class="footer">

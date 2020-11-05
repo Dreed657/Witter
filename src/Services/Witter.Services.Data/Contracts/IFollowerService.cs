@@ -7,10 +7,10 @@ namespace Witter.Services.Data.Contracts
 {
     public interface IFollowerService
     {
-        Task Follow(string parentId, string followerId);
+        Task Follow(string senderId, string reviverId);
 
-        Task UnFollow(string parentId, string followerId);
+        Task UnFollow(string senderId, string reviverId);
 
-        bool IsFollowing(string parentId, string followerId);
+        bool IsFollowing(string senderId, string reviverId);
     }
 }

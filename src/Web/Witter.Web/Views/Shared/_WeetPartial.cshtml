@@ -29,7 +29,7 @@
         {
             @if (!this.likeService.IsLiked(this.UserManager.GetUserAsync(this.User).GetAwaiter().GetResult().Id, @Model.Id.ToString()))
             {
-                <a asp-controller="Weets" asp-action="Like" asp-route-id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-info">@("DisLike (" + @Model.LikeCount + ")")</a>
+                <a asp-controller="Weets" asp-action="Like" asp-route-id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-info">@("Like (" + @Model.LikeCount + ")")</a>
             }
             else
             {

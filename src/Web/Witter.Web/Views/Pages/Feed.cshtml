@@ -1,27 +1,10 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using Witter.Data.Models
-@using Witter.Services.Data.Contracts
-@model System.Collections.Generic.IEnumerable<Witter.Web.ViewModels.Weets.FullWeetViewModel>
-@inject UserManager<ApplicationUser> UserManager
-@inject ILikeService likeService;
+﻿@model System.Collections.Generic.IEnumerable<Witter.Web.ViewModels.Weets.FullWeetViewModel>
 @{
     ViewBag.Title = "Feed";
     Layout = "_Layout";
 }
 
 <div class="container border-left border-right">
-    @if (this.User.Identity.IsAuthenticated)
-    {
-        <div class="border-bottom">
-            <form method="post" asp-controller="Weets" asp-action="Create">
-                <label for="weet">Weet</label>
-                <input type="text" class="form-control" name="Content" placeholder="Weet here">
-                <input type="text" name="returnUrl" value="@this.Context.Request.Path.Value" hidden/>
-                <button type="submit" class="btn btn-primary m-2">Submit</button>
-            </form>
-        </div>
-    }
-
     @if (Model.Any())
     {
         @foreach (var weet in Model)

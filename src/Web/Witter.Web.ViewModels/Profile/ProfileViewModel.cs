@@ -22,29 +22,33 @@ namespace Witter.Web.ViewModels.Profile
 
         public string FirstName { get; set; }
 
+        public string AboutMe { get; set; }
+
         public string LastName { get; set; }
 
         public int FollowersCount { get; set; }
 
         public int FollowingCount { get; set; }
 
-        public string Tag { get; set; }
+        public string Email { get; set; }
 
         public DateTime BirthDate { get; set; }
 
         public DateTime CreatedOn { get; set; }
-
-        public string CreatedOnOffset => ViewModelConstants.TimeConverter(TimeZoneInfo.ConvertTimeFromUtc(this.CreatedOn, TimeZoneInfo.Local));
 
         public ICollection<FullWeetViewModel> Weets { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<ApplicationUser, ProfileViewModel>()
-                .ForMember(x => x.FollowersCount, opt => opt.MapFrom(y => y.Followers.Where(x => x.IsFollowing).Where(x => x.FollowerId == y.Id).Count()));
+                .ForMember(x => x.FollowersCount, opt =>
+                    opt.MapFrom(y => y.Followers
+                        .Where(z => z.RevicerId == y.Id && z.IsFollowing).Count()));
 
             configuration.CreateMap<ApplicationUser, ProfileViewModel>()
-                .ForMember(x => x.FollowingCount, opt => opt.MapFrom(y => y.Following.Where(x => x.IsFollowing).Where(x => x.FollowingId == y.Id).Count()));
+                .ForMember(x => x.FollowingCount, opt =>
+                    opt.MapFrom(y => y.Following
+                        .Where(z => z.SenderId == y.Id && z.IsFollowing).Count()));
         }
     }
 }

@@ -4,115 +4,162 @@
 @model Witter.Web.ViewModels.Profile.ProfileViewModel
 @inject UserManager<ApplicationUser> UserManager
 @inject IFollowerService followerService
-@inject ILikeService likeService
+
 @{
     ViewBag.Title = $"{Model.UserName}";
 }
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 pb-4">
-            <div class="well well-sm">
-                <div class="row justify-content-between">
-                    <div class="col">
-                        <img src="https://via.placeholder.com/150" alt="" class="img-rounded img-responsive" />
-                    </div>
-                    <div class="col">
-                        <h4>
-                            @Model.UserName
-                        </h4>
+
+<div class="container border-left border-right p-0 mt-0">
+    @* Container Start *@
+
+    @* Profile heading Start *@
+    <div class="row-cols-1 mb-2">
+        <div class="profile-heading">
+            <div class="w-25">
+                <img src="https://via.placeholder.com/150" class="rounded img-thumbnail profile-image m-4" />
+            </div>
+            <span>
+                <img src="https://media.sproutsocial.com/uploads/2018/04/Facebook-Cover-Photo-Size.png"  class="profile-cover"/>
+            </span>
+        </div>
+    </div>
+    @* Profile heading End *@
+
+    @* Profile Info Start *@
+    <div class="row-cols-1">
+        <div class="row m-4">
+                <div class="col-sm">
+                    <div class="row-cols-1 m-auto">
+                        <h2>
+                            @Model.FirstName @Model.LastName
+                            Stoyan Lazarov
+                        </h2>
                         <small>
-                            <cite title="San Francisco, USA">
-                                San Francisco, USA <i class="glyphicon glyphicon-map-marker">
-                                </i>
-                            </cite>
+                            &commat;@Model.UserName
                         </small>
-                        <p>
-                            <i class="glyphicon glyphicon-envelope"></i>@Model.UserName@@test.com
-                            <br />
-                            <span>Created On:</span>
-                            <i class="glyphicon glyphicon-gift"></i>@Model.CreatedOnOffset
-                        </p>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="float-right">
                         @if (this.UserManager.GetUserAsync(this.User).Result.Id != @Model.Id)
                         {
                             @if (!this.followerService.IsFollowing(this.UserManager.GetUserAsync(this.User).Result.Id, @Model.Id))
                             {
-                                <a asp-controller="Profile" asp-action="Follow" asp-route-Id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-success">Follow</a>
+                                <a asp-controller="Profile" asp-action="Follow" asp-route-Id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-success my-auto">Follow</a>
                             }
                             else
                             {
-                                <a asp-controller="Profile" asp-action="UnFollow" asp-route-Id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-danger">UnFollow</a>
+                                <a asp-controller="Profile" asp-action="UnFollow" asp-route-Id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-danger my-auto">UnFollow</a>
                             }
                         }
                         else
                         {
-                            <a asp-controller="Settings" asp-action="index" class="btn btn-warning">Settings</a>
+                            <a asp-controller="Settings" asp-action="index" class="btn btn-warning my-auto">Edit Profile</a>
                         }
-                    </div>
-                    <div class="col">
-                        <p class="mb-0">Followers:</p>
-                        <small>@Model.FollowersCount</small>
-                        <p class="mb-0">Following:</p>
-                        <small>@Model.FollowingCount</small>
                     </div>
                 </div>
             </div>
+        <div class="row mx-4">
+            <div class="col">
+                <div class="row">
+                    <p>
+                        <span class="iconify" data-icon="ant-design:file-text-outlined" data-inline="false"></span>
+                        @Model.AboutMe
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        <span class="iconify" data-icon="carbon:location" data-inline="false"></span>
+                        San Francisco, USA
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        <span class="iconify" data-icon="ant-design:mail-outlined" data-inline="false"></span>
+                        @Model.Email
+                    </p>
+                </div>
+                <div class="row">
+                    <p>
+                        <span class="iconify" data-icon="ant-design:calendar-outlined" data-inline="false"></span>
+                        Joined @Model.CreatedOn.ToString("MMMM") @Model.CreatedOn.ToString("yyyy")
+                    </p>
+                </div>
+                <div class="row w-25">
+                    <div class="col-sm">
+                        <a asp-action="Followings" asp-controller="Profile" asp-route-id="@Model.Id">
+                            <span>@Model.FollowingCount</span>
+                            <span>Following</span>
+                        </a>
+                    </div>
+                    <div class="col-sm">
+                        <a asp-action="Followers" asp-controller="Profile" asp-route-id="@Model.Id">
+                            <span>@Model.FollowersCount</span>
+                            <span>Followers</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    @*Check if profile is mine*@
-
-    @if (this.User.Identity.IsAuthenticated && this.Model.Id == this.UserManager.GetUserId(this.User))
-    {
-        <hr />
-
-        <div>
-            <form method="post" asp-controller="Weets" asp-action="Create">
-                <label for="weet">Weet</label>
-                <input type="text" class="form-control" name="Content" placeholder="Weet here">
-                <input type="text" name="returnUrl" value="@this.Context.Request.Path.Value" hidden />
-                <button type="submit" class="btn btn-primary m-2">Submit</button>
-            </form>
-        </div>
-    }
+    @* Profile Info End *@
 
     <hr />
 
-    <div class="mt-2 nav-justified">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="feed-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="home"
-                   aria-selected="true">Feed</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="liked-tab" data-toggle="tab" href="#liked" role="tab" aria-controls="liked" aria-selected="false">Liked</a>
-            </li>
-        </ul>
+    @* Create Weet Start *@
+    <div class="row-cols-1 px-4">
+        @if (this.Model.Id == this.UserManager.GetUserId(this.User))
+        {
+            <partial name="_CreateWeetPartial" />
+        }
     </div>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="feed" role="tabpanel" aria-labelledby="feed-tab">
-            @if (!Model.Weets.Any())
-            {
-                <h3 class="text-center mt-3">You don't have any posts.</h3>
-            }
-            else
-            {
-                @foreach (var weet in Model.Weets.OrderByDescending(x => x.CreatedOn))
-                {
-                    <partial name="_WeetPartial" model="weet" />
-                }
-            }
-        </div>
-        <div class="tab-pane fade" id="liked" role="tabpanel" aria-labelledby="liked-tab">
-            Food truck fixie
-            locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit,
-            blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee.
-            Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum
-            PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS
-            salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit,
-            sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester
-            stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
-        </div>
-    </div>
+    @* Create Weet End *@
 
-    
+    @* Page Content Start *@
+    <div class="row-cols-1">
+        <div class="nav-justified">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="feed-tab" data-toggle="tab" href="#feed" role="tab" aria-controls="home"
+                       aria-selected="true">Feed</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="liked-tab" data-toggle="tab" href="#liked" role="tab" aria-controls="liked" aria-selected="false">Liked</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="feed" role="tabpanel" aria-labelledby="feed-tab">
+                @if (!Model.Weets.Any())
+                {
+                    <h3 class="text-center mt-3">You don't have any posts.</h3>
+                }
+                else
+                {
+                    @foreach (var weet in Model.Weets.OrderByDescending(x => x.CreatedOn))
+                    {
+                        <partial name="_WeetPartial" model="weet" />
+                    }
+                }
+            </div>
+            <div class="tab-pane fade p-4" id="liked" role="tabpanel" aria-labelledby="liked-tab">
+                Food truck fixie
+                locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit,
+                blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee.
+                Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum
+                PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS
+                salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit,
+                sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester
+                stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+            </div>
+        </div>
+    </div>
+    @* Page Content End *@
+
+    @* Container End *@
 </div>
+
+@section Scripts {
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+}

@@ -5,27 +5,29 @@
     Layout = "_Layout";
 }
 
-@if (Model.Any())
-{
-    foreach (var notification in Model)
+<div class="container">
+    @if (Model.Any())
     {
-        if (notification.Type == Witter.Data.Models.Enums.NotificationType.Like)
+        foreach (var notification in Model)
         {
-            <div class="alert alert-primary" role="alert">
-                @notification.SenderUsername liked you post!
-                On: @notification.CreatedOnToString
-            </div>
-        }
-        else if (notification.Type == Witter.Data.Models.Enums.NotificationType.Follow)
-        {
-            <div class="alert alert-success" role="alert">
-                @notification.SenderUsername followed you!
-                On: @notification.CreatedOnToString
-            </div>
+            if (notification.Type == Witter.Data.Models.Enums.NotificationType.Like)
+            {
+                <div class="alert alert-primary" role="alert">
+                    @notification.SenderUsername liked you post!
+                    On: @notification.CreatedOnToString
+                </div>
+            }
+            else if (notification.Type == Witter.Data.Models.Enums.NotificationType.Follow)
+            {
+                <div class="alert alert-success" role="alert">
+                    @notification.SenderUsername followed you!
+                    On: @notification.CreatedOnToString
+                </div>
+            }
         }
     }
-}
-else
-{
-    <h1>You don't have any new notificaitons.</h1>
-}
+    else
+    {
+        <h1>You don't have any new notificaitons.</h1>
+    }
+</div>

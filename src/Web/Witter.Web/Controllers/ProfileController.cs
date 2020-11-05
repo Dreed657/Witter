@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Witter.Common;
-using Witter.Data.Models;
-using Witter.Services.Data.Contracts;
-
-namespace Witter.Web.Controllers
+﻿namespace Witter.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Witter.Common;
+    using Witter.Data.Models;
+    using Witter.Services.Data.Contracts;
+
     [Authorize]
     public class ProfileController : Controller
     {
@@ -60,6 +61,20 @@ namespace Witter.Web.Controllers
             await this._followerService.UnFollow(loggedInUser.Id, id);
 
             return this.Redirect(returnUrl);
+        }
+
+        [Route("/Profile/{id}/Followers")]
+        public IActionResult Followers(string id)
+        {
+            var model = this._usersService.GetAllFollowers(id);
+            return this.View(model);
+        }
+
+        [Route("/Profile/{id}/Followings")]
+        public IActionResult Followings(string id)
+        {
+            var model = this._usersService.GetAllFollowing(id);
+            return this.View(model);
         }
     }
 }
