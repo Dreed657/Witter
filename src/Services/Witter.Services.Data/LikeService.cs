@@ -33,7 +33,7 @@ namespace Witter.Services.Data
                 .GetAwaiter()
                 .GetResult();
 
-            var user = this.userService.GetUserById(userId);
+            var user = this.userService.GetUserId(userId);
             var weet = await this.weetService.GetByIdAsync(weetId);
 
             if (entity == null)

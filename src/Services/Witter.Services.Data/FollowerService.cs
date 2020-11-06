@@ -33,8 +33,8 @@ namespace Witter.Services.Data
                 .AllWithDeleted()
                 .FirstOrDefault(x => x.RevicerId == reciverId && x.SenderId == senderId);
 
-            var sender = this.userService.GetUserById(senderId);
-            var revicer = this.userService.GetUserById(reciverId);
+            var sender = this.userService.GetUserId(senderId);
+            var revicer = this.userService.GetUserId(reciverId);
 
             if (entity == null || !entity.IsDeleted)
             {

@@ -1,12 +1,9 @@
 ﻿namespace Witter.Services.Data
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.InteropServices;
-    using System.Security.Cryptography.X509Certificates;
-
+    using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
@@ -24,20 +21,22 @@
             this._userRepository = repository;
         }
 
-        public ProfileViewModel GetProfileByUser(string username)
+        public T GetUserByUsername<T>(string username)
         {
-            var entity = this._userRepository
+            return this._userRepository
                 .All()
-                .To<ProfileViewModel>()
-                .ToList()
-                .FirstOrDefault(x => string.Compare(x.UserName, username, StringComparison.OrdinalIgnoreCase) == 0);
+                .Where(x => x.UserName == username)
+                .To<T>()
+                .FirstOrDefault();
+        }
 
-            if (entity == null)
-            {
-                return null;
-            }
-
-            return entity;
+        public T GetUserById<T>(string id)
+        {
+            return this._userRepository
+                .All()
+                .Where(x => x.Id == id)
+                .To<T>()
+                .FirstOrDefault();
         }
 
         public IEnumerable<string> GetAllUserFollowing(string userId)
@@ -48,7 +47,7 @@
                 .FirstOrDefault(x => x.Id == userId)
                 .Following
                 .Where(x => x.IsFollowing)
-                .Select(x => x.SenderId);
+                .Select(x => x.RevicerId);
 
             return this._userRepository
                 .All()
@@ -111,9 +110,32 @@
             return model;
         }
 
-        public ApplicationUser GetUserById(string userId)
+        public ApplicationUser GetUserId(string userId)
         {
             return this._userRepository.All().FirstOrDefaultAsync(x => x.Id == userId).GetAwaiter().GetResult();
+        }
+
+        // TODO: Add security
+        public async Task<bool> UpdateUser(InputProfileSettingsModel model)
+        {
+            var entity = this._userRepository.All().Where(x => x.Id == model.Id).FirstOrDefault();
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            entity.UserName = model.UserName;
+            entity.FirstName = model.FirstName;
+            entity.LastName = model.LastName;
+            entity.AboutMe = model.AboutMe;
+            entity.BirthDate = model.BirthDate;
+            entity.PhoneNumber = model.PhoneNumber;
+
+            this._userRepository.Update(entity);
+            await this._userRepository.SaveChangesAsync();
+
+            return true;
         }
     }
 }

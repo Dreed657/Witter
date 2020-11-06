@@ -1,18 +1,13 @@
 ﻿namespace Witter.Web.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Witter.Common;
     using Witter.Data.Models;
     using Witter.Services.Data.Contracts;
+    using Witter.Web.ViewModels.Profile;
 
     [Authorize]
     public class ProfileController : Controller
@@ -35,7 +30,7 @@
         [HttpGet("/Profile/{username}")]
         public async Task<IActionResult> Index(string username)
         {
-            var profileData = this._usersService.GetProfileByUser(username);
+            var profileData = this._usersService.GetUserByUsername<ProfileViewModel>(username);
 
             if (profileData == null)
             {
@@ -75,6 +70,23 @@
         {
             var model = this._usersService.GetAllFollowing(id);
             return this.View(model);
+        }
+
+        [HttpGet]
+        public IActionResult Settings()
+        {
+            var userId = this._userManager.GetUserId(this.User);
+            var model = this._usersService.GetUserById<UserSettingsViewModel>(userId);
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Settings(InputProfileSettingsModel model)
+        {
+            await this._usersService.UpdateUser(model);
+
+            return this.RedirectToAction(nameof(this.Index), new { username = model.UserName });
         }
     }
 }
