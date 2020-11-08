@@ -5,13 +5,7 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject ILikeService likeService;
 
-@{
-    bool isVoted = false;
-    bool isPositive = false;
-    var test = !this.likeService.IsLiked(this.UserManager.GetUserAsync(this.User).GetAwaiter().GetResult().Id, @Model.Id.ToString());
-}
-
-<div class="row border-bottom mx-2 p-2">
+<div class="row border-bottom mx-2 p-2" id="@Model.Id">
     <div class="col-11">
         <div class="row py-2">
             <h6 class="text-muted">
@@ -23,35 +17,39 @@
         <div class="row py-2">
             <p class="m-0">@Model.Content</p>
         </div>
-        <div class="row py-2">
+
+        @if (Model.Tags.Any())
+        {
+            <div class="row">
+                @foreach (var tag in Model.Tags)
+                {
+                    <a asp-controller="Tags" asp-action="Index" asp-route-name="@tag.Name" class="badge badge-info p-2 my-2 mx-2">@tag.Name</a>
+                }
+            </div>
+        }
+
+        <div class="row">
+            @if (!this.likeService.IsLiked(this.UserManager.GetUserId(this.User), Model.Id))
+            {
+                <a asp-controller="Weets" asp-action="Like" asp-route-id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-success">@($"Like ({Model.LikeCount})")</a>
+            }
+            else
+            {
+                <a asp-controller="Weets" asp-action="DisLike" asp-route-id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-danger">@($"Like ({Model.LikeCount})")</a>
+            }
             @if (await this.UserManager.GetUserAsync(this.User) == @Model.Author)
             {
-                <div class="btn-group dropleft">
+                <div class="btn-group dropleft mx-2">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dropleft
                     </button>
                     <div class="dropdown-menu">
-                        <a asp-controller="Weets" asp-action="Update" asp-route-Id="@Model.Id" class="dropdown-item">Edit</a>
-                        <a asp-controller="Weets" asp-action="Delete" asp-route-id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="dropdown-item">Delete</a>
+                        <a asp-controller="Weets" asp-action="Update" asp-route-Id="@Model.Id" class="dropdown-item p-4">Edit</a>
+                        <a asp-controller="Weets" asp-action="Delete" asp-route-id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="dropdown-item p-4">Delete</a>
                     </div>
                 </div>
             }
             <a asp-controller="Weets" asp-action="Detail" asp-route-Id="@Model.Id" class="btn btn-warning">See more.. </a>
         </div>
     </div>
-    <div class="col-1 border-left">
-        <div class="row m-auto w-75">
-            <span class="iconify" data-icon="bi:arrow-down-circle" data-inline="false" data-width="50" data-height="50" data-flip="vertical"></span>
-        </div>
-        <div class="row">
-            <p class="m-auto h3">
-                @Model.LikeCount
-            </p>
-        </div>
-        <div class="row m-auto w-75">
-            <span class="iconify" data-icon="bi:arrow-down-circle-fill" data-inline="false" data-width="50" data-height="50"></span>
-        </div>
-    </div>
 </div>
-
-@*<a class="w-50 m-auto" asp-controller="Weets" asp-action="Like" asp-route-id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value"></a>*@

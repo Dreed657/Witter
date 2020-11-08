@@ -32,6 +32,10 @@
 
         public DbSet<WeetLikes> WeetLikes { get; set; }
 
+        public DbSet<Tag> Tags { get; set; }
+
+        public DbSet<WeetTag> WeetTags { get; set; }
+
         public DbSet<Notification> Notifications { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);

@@ -1,11 +1,34 @@
 ﻿@if (this.User.Identity.IsAuthenticated)
 {
-    <div>
+    <div class="p-2 m-2 border-bottom">
         <form method="post" asp-controller="Weets" asp-action="Create">
-            <label for="weet">Weet</label>
-            <input type="text" class="form-control" name="Content" placeholder="Weet here">
+            <div class="row w-100 mx-auto">
+                <div class="form-group w-100">
+                    <textarea type="text" class="form-control" name="Content" placeholder="Weet here"></textarea>
+                </div>
+                <div class="form-group w-100">
+                    <input type="text" class="form-control" name="tags" placeholder="tags..." />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-1 p-2 mx-2">
+                            <span class="iconify" data-icon="bi:image" data-inline="false" data-width="24" data-height="24"></span>
+                        </div>
+                        <div class="col-1 p-2 mx-2">
+                            <span class="iconify" data-icon="ri:file-gif-line" data-inline="false" data-width="24" data-height="24"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary my-2 float-right">Submit</button>
+                </div>
+            </div>
             <input type="text" name="returnUrl" value="@this.Context.Request.Path.Value" hidden />
-            <button type="submit" class="btn btn-primary m-2">Submit</button>
         </form>
     </div>
 }

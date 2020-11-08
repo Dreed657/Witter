@@ -60,12 +60,15 @@
             </div>
         <div class="row mx-4">
             <div class="col">
-                <div class="row">
-                    <p>
-                        <span class="iconify" data-icon="ant-design:file-text-outlined" data-inline="false"></span>
-                        @Model.AboutMe
-                    </p>
-                </div>
+                @if (!string.IsNullOrWhiteSpace(Model.AboutMe))
+                {
+                    <div class="row">
+                        <p>
+                            <span class="iconify" data-icon="ant-design:file-text-outlined" data-inline="false"></span>
+                            @Model.AboutMe
+                        </p>
+                    </div>
+                }
                 <div class="row">
                     <p>
                         <span class="iconify" data-icon="carbon:location" data-inline="false"></span>

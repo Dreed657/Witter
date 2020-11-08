@@ -73,6 +73,7 @@ namespace Witter.Web
             services.AddTransient<IFollowerService, FollowerService>();
             services.AddTransient<ILikeService, LikeService>();
             services.AddTransient<INotificationsService, NotificationService>();
+            services.AddTransient<ITagsService, TagsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

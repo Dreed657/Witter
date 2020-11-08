@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Witter.Data.Models;
 using Witter.Services.Mapping;
 using Witter.Web.ViewModels.Common;
+using Witter.Web.ViewModels.Tags;
 
 namespace Witter.Web.ViewModels.Weets
 {
@@ -20,6 +22,8 @@ namespace Witter.Web.ViewModels.Weets
         public string CreatedOnOffset => ViewModelConstants.TimeConverter(TimeZoneInfo.ConvertTimeFromUtc(this.CreatedOn, TimeZoneInfo.Local));
 
         public DateTime CreatedOn { get; set; }
+
+        public ICollection<TagViewModel> Tags { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {

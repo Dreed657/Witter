@@ -17,6 +17,8 @@ namespace Witter.Services.Contracts
 
         IEnumerable<T> GetAll<T>();
 
+        IEnumerable<T> GetAllByTagId<T>(string id);
+
         IEnumerable<FullWeetViewModel> Feed(string userId);
 
         IEnumerable<FullWeetViewModel> Explore();

@@ -19,5 +19,7 @@ namespace Witter.Data.Models
         public string Content { get; set; }
 
         public virtual ICollection<WeetLikes> Likes { get; set; }
+
+        public ICollection<WeetTag> Tags { get; set; }
     }
 }
