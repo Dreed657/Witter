@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="4.5.2" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.13.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">

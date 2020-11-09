@@ -78,6 +78,20 @@ namespace Witter.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -184,28 +198,56 @@ namespace Witter.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserFollowers",
+                name: "Notifications",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
-                    FollowerId = table.Column<string>(nullable: false),
-                    FollowingId = table.Column<string>(nullable: false),
-                    IsFollowing = table.Column<bool>(nullable: false)
+                    Type = table.Column<int>(nullable: false),
+                    SenderId = table.Column<string>(nullable: false),
+                    RevicerId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_AspNetUsers_RevicerId",
+                        column: x => x.RevicerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Notifications_AspNetUsers_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserFollowers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    SenderId = table.Column<string>(nullable: false),
+                    RevicerId = table.Column<string>(nullable: false),
+                    IsFollowing = table.Column<bool>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserFollowers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserFollowers_AspNetUsers_FollowerId",
-                        column: x => x.FollowerId,
+                        name: "FK_UserFollowers_AspNetUsers_RevicerId",
+                        column: x => x.RevicerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserFollowers_AspNetUsers_FollowingId",
-                        column: x => x.FollowingId,
+                        name: "FK_UserFollowers_AspNetUsers_SenderId",
+                        column: x => x.SenderId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -262,6 +304,33 @@ namespace Witter.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WeetTags",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    TagId = table.Column<string>(nullable: true),
+                    WeetId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WeetTags", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WeetTags_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_WeetTags_Weets_WeetId",
+                        column: x => x.WeetId,
+                        principalTable: "Weets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -312,19 +381,34 @@ namespace Witter.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notifications_RevicerId",
+                table: "Notifications",
+                column: "RevicerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_SenderId",
+                table: "Notifications",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Settings_IsDeleted",
                 table: "Settings",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserFollowers_FollowerId",
+                name: "IX_UserFollowers_IsDeleted",
                 table: "UserFollowers",
-                column: "FollowerId");
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserFollowers_FollowingId",
+                name: "IX_UserFollowers_RevicerId",
                 table: "UserFollowers",
-                column: "FollowingId");
+                column: "RevicerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserFollowers_SenderId",
+                table: "UserFollowers",
+                column: "SenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WeetLikes_UserId",
@@ -345,6 +429,16 @@ namespace Witter.Data.Migrations
                 name: "IX_Weets_IsDeleted",
                 table: "Weets",
                 column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WeetTags_TagId",
+                table: "WeetTags",
+                column: "TagId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WeetTags_WeetId",
+                table: "WeetTags",
+                column: "WeetId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -365,6 +459,9 @@ namespace Witter.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Notifications");
+
+            migrationBuilder.DropTable(
                 name: "Settings");
 
             migrationBuilder.DropTable(
@@ -374,7 +471,13 @@ namespace Witter.Data.Migrations
                 name: "WeetLikes");
 
             migrationBuilder.DropTable(
+                name: "WeetTags");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Weets");

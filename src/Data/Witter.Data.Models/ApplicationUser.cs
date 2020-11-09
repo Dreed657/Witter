@@ -17,6 +17,7 @@ namespace Witter.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
 
+            this.Images = new HashSet<Media>();
             this.Weets = new HashSet<Weet>();
             this.Followers = new HashSet<UserFollowers>();
             this.Following = new HashSet<UserFollowers>();
@@ -33,6 +34,14 @@ namespace Witter.Data.Models
 
         public string AboutMe { get; set; }
 
+        public string ProfileImageId { get; set; }
+
+        public Media ProfileImage { get; set; }
+
+        public string CoverImageId { get; set; }
+
+        public Media CoverImage { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
@@ -40,6 +49,8 @@ namespace Witter.Data.Models
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+
+        public virtual ICollection<Media> Images { get; set; }
 
         public virtual ICollection<Weet> Weets { get; set; }
 

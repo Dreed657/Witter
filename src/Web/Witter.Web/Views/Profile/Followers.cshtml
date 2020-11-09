@@ -1,4 +1,9 @@
-﻿@model Witter.Web.ViewModels.Users.UserFollowerViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@using Witter.Data.Models
+@using Witter.Services.Data.Contracts
+@model Witter.Web.ViewModels.Users.UserFollowerViewModel
+@inject UserManager<ApplicationUser> UserManager
+@inject IFollowerService followerService
 
 <div class="container w-50 border-left border-right">
 
@@ -25,12 +30,22 @@
                 <div class="col">
                     <div class="row p-4">
                         <div class="col">
-                            <h5 class="m-0">@user.UserName</h5>
+                            <h5 class="m-0"><a asp-controller="Profile" asp-action="Index" asp-route-username="@user.UserName">@user.UserName</a></h5>
                             <small>@user.UserName</small>
                         </div>
-                        <div class="col">
-                            <a href="#" class="btn btn-primary float-right">Follow</a>
-                        </div>
+                        @if (this.UserManager.GetUserId(this.User) != user.Id)
+                        {
+                            <div class="col">
+                                @if (!this.followerService.IsFollowing(this.UserManager.GetUserId(this.User), user.Id))
+                                {
+                                    <a asp-controller="Profile" asp-action="Follow" asp-route-Id="@user.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-success my-auto">Follow</a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Profile" asp-action="UnFollow" asp-route-Id="@user.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-danger my-auto">UnFollow</a>
+                                }
+                            </div>
+                        }
                     </div>
                     <div>
                         <p class="card-text">@user.AboutMe</p>

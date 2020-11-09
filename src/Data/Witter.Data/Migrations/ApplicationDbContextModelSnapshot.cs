@@ -182,6 +182,9 @@ namespace Witter.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CoverImageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -230,6 +233,9 @@ namespace Witter.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfileImageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -245,6 +251,8 @@ namespace Witter.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CoverImageId");
+
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("NormalizedEmail")
@@ -255,7 +263,36 @@ namespace Witter.Data.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("ProfileImageId");
+
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Witter.Data.Models.Media", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.ToTable("Media");
                 });
 
             modelBuilder.Entity("Witter.Data.Models.Notification", b =>
@@ -390,6 +427,9 @@ namespace Witter.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -399,6 +439,8 @@ namespace Witter.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("ImageId");
 
                     b.HasIndex("IsDeleted");
 
@@ -513,6 +555,24 @@ namespace Witter.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Witter.Data.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("Witter.Data.Models.Media", "CoverImage")
+                        .WithMany()
+                        .HasForeignKey("CoverImageId");
+
+                    b.HasOne("Witter.Data.Models.Media", "ProfileImage")
+                        .WithMany()
+                        .HasForeignKey("ProfileImageId");
+                });
+
+            modelBuilder.Entity("Witter.Data.Models.Media", b =>
+                {
+                    b.HasOne("Witter.Data.Models.ApplicationUser", "Creator")
+                        .WithMany("Images")
+                        .HasForeignKey("CreatorId");
+                });
+
             modelBuilder.Entity("Witter.Data.Models.Notification", b =>
                 {
                     b.HasOne("Witter.Data.Models.ApplicationUser", "Revicer")
@@ -548,6 +608,10 @@ namespace Witter.Data.Migrations
                     b.HasOne("Witter.Data.Models.ApplicationUser", "Author")
                         .WithMany("Weets")
                         .HasForeignKey("AuthorId");
+
+                    b.HasOne("Witter.Data.Models.Media", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
                 });
 
             modelBuilder.Entity("Witter.Data.Models.WeetLikes", b =>

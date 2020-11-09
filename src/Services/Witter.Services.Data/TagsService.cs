@@ -16,7 +16,7 @@ namespace Witter.Services.Data
             this.tagRepo = tagRepo;
         }
 
-        public async Task<string> GetTabId(string name)
+        public async Task<string> GetTagId(string name)
         {
             return await this.GetOrCreateTag(name);
         }

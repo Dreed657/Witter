@@ -18,6 +18,16 @@
             <p class="m-0">@Model.Content</p>
         </div>
 
+
+
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div class="row">
+                <div>
+                    <img src="@Model.ImageUrl" alt="Alternate Text" style="max-height: 150px; max-width:250px;" class="p-6" />
+                </div>
+            </div>
+        }
         @if (Model.Tags.Any())
         {
             <div class="row">
@@ -27,7 +37,6 @@
                 }
             </div>
         }
-
         <div class="row">
             @if (!this.likeService.IsLiked(this.UserManager.GetUserId(this.User), Model.Id))
             {

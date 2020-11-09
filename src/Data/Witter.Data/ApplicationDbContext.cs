@@ -36,6 +36,8 @@
 
         public DbSet<WeetTag> WeetTags { get; set; }
 
+        public DbSet<Media> Media { get; set; }
+
         public DbSet<Notification> Notifications { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
@@ -79,6 +81,10 @@
             builder.Entity<ApplicationUser>()
                 .HasMany(x => x.Notifications)
                 .WithOne(x => x.Revicer);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(x => x.Images)
+                .WithOne(x => x.Creator);
 
             // Set global query filter for not deleted entities only
             var deletableEntityTypes = entityTypes

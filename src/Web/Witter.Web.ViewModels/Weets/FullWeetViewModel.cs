@@ -21,12 +21,18 @@ namespace Witter.Web.ViewModels.Weets
 
         public string CreatedOnOffset => ViewModelConstants.TimeConverter(TimeZoneInfo.ConvertTimeFromUtc(this.CreatedOn, TimeZoneInfo.Local));
 
+        public string ImageUrl { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public ICollection<TagViewModel> Tags { get; set; }
 
         public void CreateMappings(IProfileExpression configuration)
         {
+            configuration.CreateMap<Weet, FullWeetViewModel>()
+              .ForMember(x => x.ImageUrl, opt =>
+                  opt.MapFrom(y => y.Image.Url));
+
             configuration.CreateMap<Weet, FullWeetViewModel>().ForMember(
                 x => x.LikeCount, opt => opt.MapFrom(y => y.Likes.Count(b => b.IsLiked)));
         }

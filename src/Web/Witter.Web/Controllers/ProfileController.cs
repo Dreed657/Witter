@@ -76,7 +76,7 @@
         public IActionResult Settings()
         {
             var userId = this._userManager.GetUserId(this.User);
-            var model = this._usersService.GetUserById<UserSettingsViewModel>(userId);
+            var model = this._usersService.GetUserById<InputProfileSettingsModel>(userId);
 
             return this.View(model);
         }

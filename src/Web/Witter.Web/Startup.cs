@@ -25,6 +25,7 @@ namespace Witter.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using CloudinaryDotNet;
 
     public class Startup
     {
@@ -60,13 +61,21 @@ namespace Witter.Web
 
             services.AddSingleton(this.configuration);
 
+            var cloudinaryAccount = new CloudinaryDotNet.Account(
+                this.configuration["Cloudinary:CloudName"],
+                this.configuration["Cloudinary:ApiKey"],
+                this.configuration["Cloudinary:ApiSecret"]);
+            var cloudinary = new Cloudinary(cloudinaryAccount);
+            services.AddSingleton(cloudinary);
+
+            services.AddTransient<IEmailSender, SendGridEmailSender>(x => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
+
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IEmailSender, SendGridEmailSender>(x => new SendGridEmailSender(this.configuration["SendGrid_ApiKey"]));
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IWeetsService, WeetsService>();
             services.AddTransient<IUserService, UserService>();

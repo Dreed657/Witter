@@ -7,6 +7,19 @@
 
 @{
     ViewBag.Title = $"{Model.UserName}";
+
+    var profileImageUrl = @"https://via.placeholder.com/150";
+    var coverImageUrl = @"https://media.sproutsocial.com/uploads/2018/04/Facebook-Cover-Photo-Size.png";
+
+    if (!string.IsNullOrEmpty(Model.ProfileImageUrl))
+    {
+        profileImageUrl = Model.ProfileImageUrl;
+    }
+
+    if (!string.IsNullOrEmpty(Model.CoverImageUrl))
+    {
+        coverImageUrl = Model.CoverImageUrl;
+    }
 }
 
 <div class="container border-left border-right p-0 mt-0">
@@ -16,10 +29,10 @@
     <div class="row-cols-1 mb-2">
         <div class="profile-heading">
             <div class="w-25">
-                <img src="https://via.placeholder.com/150" class="rounded img-thumbnail profile-image m-4" />
+                <img src="@profileImageUrl" class="rounded img-thumbnail profile-image m-4" />
             </div>
             <span>
-                <img src="https://media.sproutsocial.com/uploads/2018/04/Facebook-Cover-Photo-Size.png"  class="profile-cover"/>
+                <img src="@coverImageUrl" class="profile-cover" />
             </span>
         </div>
     </div>
@@ -28,36 +41,36 @@
     @* Profile Info Start *@
     <div class="row-cols-1">
         <div class="row m-4">
-                <div class="col-sm">
-                    <div class="row-cols-1 m-auto">
-                        <h2>
-                            @Model.FirstName @Model.LastName
-                        </h2>
-                        <small>
-                            &commat;@Model.UserName
-                        </small>
-                    </div>
+            <div class="col-sm">
+                <div class="row-cols-1 m-auto">
+                    <h2>
+                        @Model.FirstName @Model.LastName
+                    </h2>
+                    <small>
+                        &commat;@Model.UserName
+                    </small>
                 </div>
-                <div class="col-sm">
-                    <div class="float-right">
-                        @if (this.UserManager.GetUserAsync(this.User).Result.Id != @Model.Id)
+            </div>
+            <div class="col-sm">
+                <div class="float-right">
+                    @if (this.UserManager.GetUserAsync(this.User).Result.Id != @Model.Id)
+                    {
+                        @if (!this.followerService.IsFollowing(this.UserManager.GetUserAsync(this.User).Result.Id, @Model.Id))
                         {
-                            @if (!this.followerService.IsFollowing(this.UserManager.GetUserAsync(this.User).Result.Id, @Model.Id))
-                            {
-                                <a asp-controller="Profile" asp-action="Follow" asp-route-Id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-success my-auto">Follow</a>
-                            }
-                            else
-                            {
-                                <a asp-controller="Profile" asp-action="UnFollow" asp-route-Id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-danger my-auto">UnFollow</a>
-                            }
+                            <a asp-controller="Profile" asp-action="Follow" asp-route-Id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-success my-auto">Follow</a>
                         }
                         else
                         {
-                            <a asp-controller="Profile" asp-action="Settings" class="btn btn-warning my-auto">Edit Profile</a>
+                            <a asp-controller="Profile" asp-action="UnFollow" asp-route-Id="@Model.Id" asp-route-returnUrl="@this.Context.Request.Path.Value" class="btn btn-danger my-auto">UnFollow</a>
                         }
-                    </div>
+                    }
+                    else
+                    {
+                        <a asp-controller="Profile" asp-action="Settings" class="btn btn-warning my-auto">Edit Profile</a>
+                    }
                 </div>
             </div>
+        </div>
         <div class="row mx-4">
             <div class="col">
                 @if (!string.IsNullOrWhiteSpace(Model.AboutMe))
@@ -127,7 +140,7 @@
                        aria-selected="true">Feed</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="liked-tab" data-toggle="tab" href="#liked" role="tab" aria-controls="liked" aria-selected="false">Liked</a>
+                    <a class="nav-link" id="liked-tab" data-toggle="tab" href="#liked" role="tab" aria-controls="liked" aria-selected="false">Media</a>
                 </li>
             </ul>
         </div>
@@ -146,14 +159,17 @@
                 }
             </div>
             <div class="tab-pane fade p-4" id="liked" role="tabpanel" aria-labelledby="liked-tab">
-                Food truck fixie
-                locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit,
-                blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee.
-                Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum
-                PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS
-                salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit,
-                sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester
-                stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+                @if (!Model.Images.Any())
+                {
+                    <h3 class="text-center mt-3">You don't have any media.</h3>
+                }
+                else
+                {
+                    @foreach (var imageUrl in Model.Images)
+                    {
+                        <img src="@imageUrl.Url" alt="Test" style="max-height: 150px; max-width:250px;" class="img-thumbnail" />
+                    }
+                }
             </div>
         </div>
     </div>

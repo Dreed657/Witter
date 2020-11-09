@@ -2,9 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
     using Microsoft.EntityFrameworkCore;
+    using SdvCode.Services.Cloud;
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
     using Witter.Services.Data.Contracts;
@@ -14,10 +18,12 @@
 
     public class UserService : IUserService
     {
+        private readonly Cloudinary cloudinary;
         private readonly IRepository<ApplicationUser> _userRepository;
 
-        public UserService(IRepository<ApplicationUser> repository)
+        public UserService(Cloudinary cloudinary, IRepository<ApplicationUser> repository)
         {
+            this.cloudinary = cloudinary;
             this._userRepository = repository;
         }
 
@@ -131,6 +137,32 @@
             entity.AboutMe = model.AboutMe;
             entity.BirthDate = model.BirthDate;
             entity.PhoneNumber = model.PhoneNumber;
+
+            var profileImageName = Guid.NewGuid().ToString();
+            var profileImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, model.ProfileImageSource, profileImageName);
+
+            if (!string.IsNullOrEmpty(profileImageUrl))
+            {
+                entity.ProfileImage = new Media()
+                {
+                    Url = profileImageUrl,
+                    Name = profileImageName,
+                    Creator = entity,
+                };
+            }
+
+            var coverImageName = Guid.NewGuid().ToString();
+            var coverImageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, model.CoverImageSource, coverImageName);
+
+            if (!string.IsNullOrEmpty(coverImageUrl))
+            {
+                entity.CoverImage = new Media()
+                {
+                    Url = coverImageUrl,
+                    Name = coverImageName,
+                    Creator = entity,
+                };
+            }
 
             this._userRepository.Update(entity);
             await this._userRepository.SaveChangesAsync();

@@ -1,13 +1,13 @@
-﻿using System;
-using Witter.Data.Models;
-using Witter.Services.Mapping;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Witter.Web.ViewModels.Weets
 {
-    public class WeetCreateModel : IMapTo<Weet>
+    public class WeetCreateModel
     {
         public string Content { get; set; }
 
         public string Tags { get; set; }
+
+        public IFormFile Image { get; set; }
     }
 }

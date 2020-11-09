@@ -18,6 +18,10 @@ namespace Witter.Data.Models
 
         public string Content { get; set; }
 
+        public string ImageId { get; set; }
+
+        public Media Image { get; set; }
+
         public virtual ICollection<WeetLikes> Likes { get; set; }
 
         public ICollection<WeetTag> Tags { get; set; }

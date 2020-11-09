@@ -5,6 +5,7 @@ using System.Xml.Xsl;
 using Witter.Data.Models;
 using Witter.Services.Contracts;
 using Witter.Services.Data.Contracts;
+using Witter.Services.Messaging;
 
 namespace Witter.Web.Controllers
 {
@@ -26,7 +27,6 @@ namespace Witter.Web.Controllers
         public IActionResult Feed()
         {
             var user = this._userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
-
             var weets = this._weetsService.Feed(user.Id);
 
             return this.View(weets);
@@ -47,7 +47,7 @@ namespace Witter.Web.Controllers
             var user = this._userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
             var entities = this.notificationsService.GetAllNotificationByUserId(user.Id);
 
-            return View(entities);
+            return this.View(entities);
         }
     }
 }

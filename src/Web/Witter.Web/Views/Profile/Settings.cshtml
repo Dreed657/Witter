@@ -1,7 +1,7 @@
-﻿@model Witter.Web.ViewModels.Profile.UserSettingsViewModel
+﻿@model Witter.Web.ViewModels.Profile.InputProfileSettingsModel
 
 <div class="container p-4">
-    <form asp-controller="Profile" asp-action="Settings" method="post">
+    <form asp-controller="Profile" asp-action="Settings" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label asp-for="UserName"></label>
             <input class="form-control" asp-for="UserName" name="UserName" />
@@ -27,6 +27,14 @@
         <div class="form-group">
             <label asp-for="BirthDate"></label>
             <input class="form-control" asp-for="BirthDate" name="BirthDate" />
+        </div>
+        <div class="form-group">
+            <label asp-for="ProfileImageSource"></label>
+            <input class="form-control" asp-for="ProfileImageSource" name="ProfileImageSource" />
+        </div>
+        <div class="form-group">
+            <label asp-for="CoverImageSource"></label>
+            <input class="form-control" asp-for="CoverImageSource" name="CoverImageSource" />
         </div>
         <input type="submit" />
         <input asp-for="Id" name="Id" hidden />

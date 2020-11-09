@@ -6,6 +6,6 @@ namespace Witter.Services.Data.Contracts
 {
     public interface ITagsService
     {
-        Task<string> GetTabId(string name);
+        Task<string> GetTagId(string name);
     }
 }

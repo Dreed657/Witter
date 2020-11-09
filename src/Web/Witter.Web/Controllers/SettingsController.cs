@@ -31,8 +31,6 @@
             var settings = this.settingsService.GetAll<SettingViewModel>();
             var model = new SettingsListViewModel { Settings = settings };
 
-            await this.emailSender.SendEmailAsync(@"ninjakiviWTF@gmail.com", @"Witter noreply", @"igopmvvwjqjoptdmrp@etochq.com", "Email Confirmation", @"<h1>Hello World!</h1>");
-
             return this.View(model);
         }
 

@@ -3,12 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.InteropServices;
-    using System.Runtime.InteropServices.ComTypes;
     using System.Threading.Tasks;
-
+    using CloudinaryDotNet;
     using Microsoft.EntityFrameworkCore;
+    using SdvCode.Services.Cloud;
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
     using Witter.Services.Contracts;
@@ -18,13 +16,14 @@
 
     public class WeetsService : IWeetsService
     {
+        private readonly Cloudinary cloudinary;
         private readonly IDeletableEntityRepository<Weet> _weetRepository;
-
         private readonly IUserService _userService;
         private readonly ITagsService tagsService;
 
-        public WeetsService(IDeletableEntityRepository<Weet> repository, IUserService userService, ITagsService tagsService)
+        public WeetsService(Cloudinary cloudinary, IDeletableEntityRepository<Weet> repository, IUserService userService, ITagsService tagsService)
         {
+            this.cloudinary = cloudinary;
             this._weetRepository = repository;
             this._userService = userService;
             this.tagsService = tagsService;
@@ -39,7 +38,26 @@
                 Content = model.Content,
             };
 
-            entity.Tags = await this.ConvertToTags(entity.Id, model.Tags);
+            if (!string.IsNullOrWhiteSpace(model.Tags))
+            {
+                entity.Tags = await this.ConvertToTags(entity.Id, model.Tags);
+            }
+
+            var imageName = Guid.NewGuid().ToString();
+            var imageUrl = await ApplicationCloudinary.UploadImage(this.cloudinary, model.Image, imageName);
+
+            if (!string.IsNullOrEmpty(imageUrl))
+            {
+                entity.Image = new Media()
+                {
+                    Url = imageUrl,
+                    Name = imageName,
+                    Creator = user,
+                };
+
+                var tagId = await this.tagsService.GetTagId("Images");
+                entity.Tags.Add(new WeetTag() { TagId = tagId, WeetId = entity.Id });
+            }
 
             await this._weetRepository.AddAsync(entity);
             await this._weetRepository.SaveChangesAsync();
@@ -120,7 +138,7 @@
 
             foreach (var tag in tagsList)
             {
-                var tagId = await this.tagsService.GetTabId(tag);
+                var tagId = await this.tagsService.GetTagId(tag);
 
                 result.Add(new WeetTag() { TagId = tagId, WeetId = weetId });
             }

@@ -10,8 +10,8 @@ using Witter.Data;
 namespace Witter.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201010163120_InitMigration")]
-    partial class InitMigration
+    [Migration("20201109154446_AddMedia")]
+    partial class AddMedia
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -184,6 +184,9 @@ namespace Witter.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CoverImageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -232,6 +235,9 @@ namespace Witter.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ProfileImageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -247,6 +253,8 @@ namespace Witter.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CoverImageId");
+
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("NormalizedEmail")
@@ -257,7 +265,62 @@ namespace Witter.Data.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("ProfileImageId");
+
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Witter.Data.Models.Media", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Media");
+                });
+
+            modelBuilder.Entity("Witter.Data.Models.Notification", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RevicerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RevicerId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("Witter.Data.Models.Setting", b =>
@@ -292,7 +355,7 @@ namespace Witter.Data.Migrations
                     b.ToTable("Settings");
                 });
 
-            modelBuilder.Entity("Witter.Data.Models.UserFollowers", b =>
+            modelBuilder.Entity("Witter.Data.Models.Tag", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -300,25 +363,46 @@ namespace Witter.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FollowerId")
-                        .IsRequired()
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
+            modelBuilder.Entity("Witter.Data.Models.UserFollowers", b =>
+                {
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("FollowingId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsFollowing")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("RevicerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FollowerId");
+                    b.HasIndex("IsDeleted");
 
-                    b.HasIndex("FollowingId");
+                    b.HasIndex("RevicerId");
+
+                    b.HasIndex("SenderId");
 
                     b.ToTable("UserFollowers");
                 });
@@ -386,6 +470,32 @@ namespace Witter.Data.Migrations
                     b.ToTable("WeetLikes");
                 });
 
+            modelBuilder.Entity("Witter.Data.Models.WeetTag", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TagId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WeetId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TagId");
+
+                    b.HasIndex("WeetId");
+
+                    b.ToTable("WeetTags");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Witter.Data.Models.ApplicationRole", null)
@@ -437,17 +547,43 @@ namespace Witter.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Witter.Data.Models.UserFollowers", b =>
+            modelBuilder.Entity("Witter.Data.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("Witter.Data.Models.ApplicationUser", "Follower")
-                        .WithMany("Followers")
-                        .HasForeignKey("FollowerId")
+                    b.HasOne("Witter.Data.Models.Media", "CoverImage")
+                        .WithMany()
+                        .HasForeignKey("CoverImageId");
+
+                    b.HasOne("Witter.Data.Models.Media", "ProfileImage")
+                        .WithMany()
+                        .HasForeignKey("ProfileImageId");
+                });
+
+            modelBuilder.Entity("Witter.Data.Models.Notification", b =>
+                {
+                    b.HasOne("Witter.Data.Models.ApplicationUser", "Revicer")
+                        .WithMany("Notifications")
+                        .HasForeignKey("RevicerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Witter.Data.Models.ApplicationUser", "Following")
+                    b.HasOne("Witter.Data.Models.ApplicationUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Witter.Data.Models.UserFollowers", b =>
+                {
+                    b.HasOne("Witter.Data.Models.ApplicationUser", "Revicer")
+                        .WithMany("Followers")
+                        .HasForeignKey("RevicerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Witter.Data.Models.ApplicationUser", "Sender")
                         .WithMany("Following")
-                        .HasForeignKey("FollowingId")
+                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -472,6 +608,17 @@ namespace Witter.Data.Migrations
                         .HasForeignKey("WeetId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Witter.Data.Models.WeetTag", b =>
+                {
+                    b.HasOne("Witter.Data.Models.Tag", "Tag")
+                        .WithMany("Weets")
+                        .HasForeignKey("TagId");
+
+                    b.HasOne("Witter.Data.Models.Weet", "Weet")
+                        .WithMany("Tags")
+                        .HasForeignKey("WeetId");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,7 @@
 ﻿@if (this.User.Identity.IsAuthenticated)
 {
     <div class="p-2 m-2 border-bottom">
-        <form method="post" asp-controller="Weets" asp-action="Create">
+        <form method="post" asp-controller="Weets" asp-action="Create" enctype="multipart/form-data">
             <div class="row w-100 mx-auto">
                 <div class="form-group w-100">
                     <textarea type="text" class="form-control" name="Content" placeholder="Weet here"></textarea>
@@ -12,12 +12,13 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <div class="row">
-                        <div class="col-1 p-2 mx-2">
-                            <span class="iconify" data-icon="bi:image" data-inline="false" data-width="24" data-height="24"></span>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
                         </div>
-                        <div class="col-1 p-2 mx-2">
-                            <span class="iconify" data-icon="ri:file-gif-line" data-inline="false" data-width="24" data-height="24"></span>
+                        <div class="custom-file">
+                            <input class="custom-file-input" type="file" name="image">
+                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                         </div>
                     </div>
                 </div>
