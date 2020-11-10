@@ -1,18 +1,14 @@
 ﻿namespace Witter.Services.Data.Tests
 {
+    using Microsoft.EntityFrameworkCore;
+    using Moq;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
     using Witter.Data;
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
     using Witter.Data.Repositories;
-
-    using Microsoft.EntityFrameworkCore;
-
-    using Moq;
-
     using Xunit;
 
     public class SettingsServiceTests

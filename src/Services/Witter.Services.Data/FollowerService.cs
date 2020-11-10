@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Witter.Data.Common.Repositories;
 using Witter.Data.Models;
 using Witter.Data.Models.Enums;

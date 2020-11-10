@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Witter.Web.ViewModels.Weets;
+﻿using System.Threading.Tasks;
 
 namespace Witter.Services.Data.Contracts
 {

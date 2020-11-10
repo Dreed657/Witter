@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Witter.Common
+﻿namespace Witter.Common
 {
     public static class GlobalConstants
     {

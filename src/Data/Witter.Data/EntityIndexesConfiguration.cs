@@ -1,8 +1,6 @@
-﻿using System.Linq;
-
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Witter.Data.Common.Models;
-
-using Microsoft.EntityFrameworkCore;
 
 namespace Witter.Data
 {

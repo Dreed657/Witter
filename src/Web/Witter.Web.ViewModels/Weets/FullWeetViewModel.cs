@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Witter.Data.Models;
 using Witter.Services.Mapping;
 using Witter.Web.ViewModels.Common;

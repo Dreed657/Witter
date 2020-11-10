@@ -1,14 +1,12 @@
 ﻿namespace Witter.Services.Data
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
     using CloudinaryDotNet;
-    using CloudinaryDotNet.Actions;
     using Microsoft.EntityFrameworkCore;
     using SdvCode.Services.Cloud;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
     using Witter.Services.Data.Contracts;

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Witter.Data.Models
+﻿namespace Witter.Data.Models
 {
     using System;
     using System.Collections.Generic;

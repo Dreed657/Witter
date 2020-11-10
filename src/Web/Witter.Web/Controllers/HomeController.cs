@@ -1,8 +1,5 @@
 ﻿namespace Witter.Web.Controllers
 {
-    using System.Diagnostics;
-
-    using Witter.Web.ViewModels;
 
     using Microsoft.AspNetCore.Mvc;
 

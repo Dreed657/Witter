@@ -1,9 +1,8 @@
 ﻿namespace Witter.Web.ViewModels.Settings
 {
+    using AutoMapper;
     using Witter.Data.Models;
     using Witter.Services.Mapping;
-
-    using AutoMapper;
 
     public class SettingViewModel : IMapFrom<Setting>, IHaveCustomMappings
     {
@@ -19,7 +18,7 @@
         {
             configuration.CreateMap<Setting, SettingViewModel>().ForMember(
                 m => m.NameAndValue,
-                opt => 
+                opt =>
                     opt.MapFrom(x => x.Name + " = " + x.Value));
         }
     }

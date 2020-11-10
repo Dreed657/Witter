@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Witter.Services.Contracts;
-using Witter.Services.Data.Contracts;
 using Witter.Web.ViewModels.Tags;
 using Witter.Web.ViewModels.Weets;
 

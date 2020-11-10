@@ -1,11 +1,18 @@
-﻿using AutoMapper;
-using Witter.Services.Contracts;
+﻿using Witter.Services.Contracts;
 using Witter.Services.Data.Contracts;
 
 namespace Witter.Web
 {
+    using CloudinaryDotNet;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using System.Reflection;
-
     using Witter.Data;
     using Witter.Data.Common;
     using Witter.Data.Common.Repositories;
@@ -16,16 +23,6 @@ namespace Witter.Web
     using Witter.Services.Mapping;
     using Witter.Services.Messaging;
     using Witter.Web.ViewModels;
-
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using CloudinaryDotNet;
 
     public class Startup
     {

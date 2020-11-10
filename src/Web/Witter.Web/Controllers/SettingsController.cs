@@ -1,15 +1,13 @@
 ﻿namespace Witter.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Threading.Tasks;
-
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
     using Witter.Services.Data;
-    using Witter.Web.ViewModels.Settings;
-
-    using Microsoft.AspNetCore.Mvc;
     using Witter.Services.Messaging;
+    using Witter.Web.ViewModels.Settings;
 
     public class SettingsController : BaseController
     {

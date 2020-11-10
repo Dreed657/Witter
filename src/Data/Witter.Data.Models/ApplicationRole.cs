@@ -1,11 +1,9 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
 namespace Witter.Data.Models
 {
-    using System;
-
-    using Witter.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using System;
+    using Witter.Data.Common.Models;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

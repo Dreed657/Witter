@@ -1,10 +1,14 @@
 ﻿namespace Sandbox
 {
+    using CommandLine;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
-
     using Witter.Data;
     using Witter.Data.Common;
     using Witter.Data.Common.Repositories;
@@ -13,13 +17,6 @@
     using Witter.Data.Seeding;
     using Witter.Services.Data;
     using Witter.Services.Messaging;
-
-    using CommandLine;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
 
     public static class Program
     {

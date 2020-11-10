@@ -7,7 +7,7 @@ namespace Witter.Web.ViewModels.Weets
     public class DetailedWeetViewModel : IMapFrom<Weet>
     {
         public string Id { get; set; }
-        
+
         public ApplicationUser Author { get; set; }
 
         public string Content { get; set; }

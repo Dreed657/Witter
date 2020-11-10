@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Xsl;
 using Witter.Data.Models;
 using Witter.Services.Contracts;
 using Witter.Services.Data.Contracts;
-using Witter.Services.Messaging;
 
 namespace Witter.Web.Controllers
 {

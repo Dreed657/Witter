@@ -1,11 +1,9 @@
 ﻿namespace Witter.Data
 {
+    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Threading.Tasks;
-
     using Witter.Data.Common;
-
-    using Microsoft.EntityFrameworkCore;
 
     public class DbQueryRunner : IDbQueryRunner
     {

@@ -1,10 +1,9 @@
 ﻿namespace Witter.Web.Controllers
 {
-    using System.Threading.Tasks;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
     using Witter.Data.Models;
     using Witter.Services.Data.Contracts;
     using Witter.Web.ViewModels.Profile;

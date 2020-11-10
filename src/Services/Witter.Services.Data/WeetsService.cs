@@ -1,12 +1,12 @@
 ﻿namespace Witter.Services.Data
 {
+    using CloudinaryDotNet;
+    using Microsoft.EntityFrameworkCore;
+    using SdvCode.Services.Cloud;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using CloudinaryDotNet;
-    using Microsoft.EntityFrameworkCore;
-    using SdvCode.Services.Cloud;
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
     using Witter.Services.Contracts;
@@ -118,7 +118,7 @@
 
         public T GetByIdToViewModel<T>(string Id)
         {
-            return (T)this._weetRepository
+            return this._weetRepository
                 .All()
                 .Where(x => x.Id == Id)
                 .To<T>()
