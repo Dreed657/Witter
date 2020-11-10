@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Witter.Web.ViewModels.Users
+﻿namespace Witter.Web.ViewModels.Users
 {
+    using System.Collections.Generic;
+
     public class UserFollowerViewModel
     {
         public string Id { get; set; }

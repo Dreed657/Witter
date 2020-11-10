@@ -1,31 +1,31 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Witter.Data.Models;
-using Witter.Services.Contracts;
-using Witter.Services.Data.Contracts;
-
-namespace Witter.Web.Controllers
+﻿namespace Witter.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Witter.Data.Models;
+    using Witter.Services.Contracts;
+    using Witter.Services.Data.Contracts;
+
     public class PagesController : BaseController
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IWeetsService _weetsService;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IWeetsService weetsService;
         private readonly INotificationsService notificationsService;
 
         public PagesController(IWeetsService weetService, INotificationsService notificationsService, UserManager<ApplicationUser> userManager)
         {
-            this._weetsService = weetService;
+            this.weetsService = weetService;
             this.notificationsService = notificationsService;
-            this._userManager = userManager;
+            this.userManager = userManager;
         }
 
         [Authorize]
         [HttpGet("Feed")]
         public IActionResult Feed()
         {
-            var user = this._userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
-            var weets = this._weetsService.Feed(user.Id);
+            var user = this.userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
+            var weets = this.weetsService.Feed(user.Id);
 
             return this.View(weets);
         }
@@ -33,7 +33,7 @@ namespace Witter.Web.Controllers
         [HttpGet("Explore")]
         public IActionResult Explore()
         {
-            var weets = this._weetsService.Explore();
+            var weets = this.weetsService.Explore();
 
             return this.View(weets);
         }
@@ -42,7 +42,7 @@ namespace Witter.Web.Controllers
         [HttpGet("Notifications")]
         public IActionResult Notifications()
         {
-            var user = this._userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
+            var user = this.userManager.GetUserAsync(this.User).GetAwaiter().GetResult();
             var entities = this.notificationsService.GetAllNotificationByUserId(user.Id);
 
             return this.View(entities);

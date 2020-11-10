@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Witter.Data.Common.Repositories;
-using Witter.Data.Models;
-using Witter.Services.Data.Contracts;
-
-namespace Witter.Services.Data
+﻿namespace Witter.Services.Data
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Witter.Data.Common.Repositories;
+    using Witter.Data.Models;
+    using Witter.Services.Data.Contracts;
+
     public class TagsService : ITagsService
     {
         private readonly IRepository<Tag> tagRepo;

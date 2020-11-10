@@ -3,12 +3,13 @@
 
 namespace SdvCode.Services.Cloud
 {
-    using CloudinaryDotNet;
-    using CloudinaryDotNet.Actions;
-    using Microsoft.AspNetCore.Http;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
+
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
+    using Microsoft.AspNetCore.Http;
 
     public class ApplicationCloudinary
     {
@@ -41,7 +42,9 @@ namespace SdvCode.Services.Cloud
                     };
 
                     var uploadResult = cloudinary.Upload(uploadParams);
+#pragma warning disable CS0618 // Type or member is obsolete
                     return uploadResult.SecureUri.AbsoluteUri;
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
             }
 

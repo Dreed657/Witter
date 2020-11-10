@@ -1,14 +1,15 @@
-﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Witter.Data.Models;
-using Witter.Services.Mapping;
-using Witter.Web.ViewModels.Common;
-using Witter.Web.ViewModels.Tags;
-
-namespace Witter.Web.ViewModels.Weets
+﻿namespace Witter.Web.ViewModels.Weets
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using AutoMapper;
+    using Witter.Data.Models;
+    using Witter.Services.Mapping;
+    using Witter.Web.ViewModels.Common;
+    using Witter.Web.ViewModels.Tags;
+
     public class FullWeetViewModel : IMapFrom<Weet>, IHaveCustomMappings
     {
         public string Id { get; set; }

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using Witter.Services.Contracts;
-using Witter.Web.ViewModels.Tags;
-using Witter.Web.ViewModels.Weets;
-
-namespace Witter.Web.Controllers
+﻿namespace Witter.Web.Controllers
 {
+    using System.Linq;
+
+    using Microsoft.AspNetCore.Mvc;
+    using Witter.Services.Contracts;
+    using Witter.Web.ViewModels.Tags;
+    using Witter.Web.ViewModels.Weets;
+
     public class TagsController : Controller
     {
         private readonly IWeetsService weetsService;

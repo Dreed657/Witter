@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Witter.Web.ViewModels.Weets
+﻿namespace Witter.Web.ViewModels.Weets
 {
+    using Microsoft.AspNetCore.Http;
+
     public class WeetCreateModel
     {
         public string Content { get; set; }

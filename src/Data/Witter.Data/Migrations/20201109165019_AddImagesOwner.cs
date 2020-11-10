@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace Witter.Data.Migrations
+﻿namespace Witter.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddImagesOwner : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

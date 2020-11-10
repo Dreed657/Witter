@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+
     using Witter.Data.Common.Models;
 
     public class Weet : BaseDeletableModel<string>

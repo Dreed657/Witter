@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using Witter.Data.Common.Models;
-
-namespace Witter.Data
+﻿namespace Witter.Data
 {
+    using System.Linq;
+
+    using Microsoft.EntityFrameworkCore;
+    using Witter.Data.Common.Models;
+
     internal static class EntityIndexesConfiguration
     {
         public static void Configure(ModelBuilder modelBuilder)

@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
-using Witter.Data.Common.Repositories;
-using Witter.Data.Models;
-using Witter.Data.Models.Enums;
-using Witter.Services.Data.Contracts;
-
-namespace Witter.Services.Data
+﻿namespace Witter.Services.Data
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
+    using Witter.Data.Common.Repositories;
+    using Witter.Data.Models;
+    using Witter.Data.Models.Enums;
+    using Witter.Services.Data.Contracts;
+
     public class FollowerService : IFollowerService
     {
         private readonly IDeletableEntityRepository<UserFollowers> followerRepository;
@@ -23,9 +24,8 @@ namespace Witter.Services.Data
             this.notificationsService = notificationsService;
         }
 
-        // TODO: Properties are mapping in reverse 
+        // TODO: Properties are mapping in reverse
         // Data models for userFollowers table should change.
-
         public async Task Follow(string senderId, string reciverId)
         {
             var entity = this.followerRepository

@@ -1,13 +1,14 @@
-﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Witter.Data.Models;
-using Witter.Services.Mapping;
-using Witter.Web.ViewModels.Weets;
-
-namespace Witter.Web.ViewModels.Profile
+﻿namespace Witter.Web.ViewModels.Profile
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using AutoMapper;
+    using Witter.Data.Models;
+    using Witter.Services.Mapping;
+    using Witter.Web.ViewModels.Weets;
+
     public class ProfileViewModel : IMapFrom<ApplicationUser>, IHaveCustomMappings
     {
         public ProfileViewModel()

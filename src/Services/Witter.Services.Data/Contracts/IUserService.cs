@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Witter.Data.Models;
-using Witter.Web.ViewModels.Profile;
-using Witter.Web.ViewModels.Users;
-
-namespace Witter.Services.Data.Contracts
+﻿namespace Witter.Services.Data.Contracts
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using Witter.Data.Models;
+    using Witter.Web.ViewModels.Profile;
+    using Witter.Web.ViewModels.Users;
+
     public interface IUserService
     {
         T GetUserByUsername<T>(string username);
@@ -18,8 +19,8 @@ namespace Witter.Services.Data.Contracts
 
         ApplicationUser GetUserId(string userId);
 
-        UserFollowerViewModel GetAllFollowers(string Id);
+        UserFollowerViewModel GetAllFollowers(string id);
 
-        UserFollowerViewModel GetAllFollowing(string Id);
+        UserFollowerViewModel GetAllFollowing(string id);
     }
 }

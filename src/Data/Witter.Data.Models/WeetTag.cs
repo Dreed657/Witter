@@ -1,6 +1,7 @@
 ﻿namespace Witter.Data.Models
 {
     using System;
+
     using Witter.Data.Common.Models;
 
     public class WeetTag : BaseModel<string>

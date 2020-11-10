@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using Witter.Data.Models;
-using Witter.Services.Mapping;
-
-namespace Witter.Web.ViewModels.Tags
+﻿namespace Witter.Web.ViewModels.Tags
 {
+    using AutoMapper;
+    using Witter.Data.Models;
+    using Witter.Services.Mapping;
+
     public class TagViewModel : IMapFrom<Tag>, IHaveCustomMappings
     {
         public string Id { get; set; }

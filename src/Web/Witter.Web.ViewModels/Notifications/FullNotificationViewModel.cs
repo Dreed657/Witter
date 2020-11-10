@@ -1,12 +1,13 @@
-﻿using AutoMapper;
-using System;
-using System.Globalization;
-using Witter.Data.Models;
-using Witter.Data.Models.Enums;
-using Witter.Services.Mapping;
-
-namespace Witter.Web.ViewModels.Notifications
+﻿namespace Witter.Web.ViewModels.Notifications
 {
+    using System;
+    using System.Globalization;
+
+    using AutoMapper;
+    using Witter.Data.Models;
+    using Witter.Data.Models.Enums;
+    using Witter.Services.Mapping;
+
     public class FullNotificationViewModel : IMapFrom<Notification>, IHaveCustomMappings
     {
         public NotificationType Type { get; set; }

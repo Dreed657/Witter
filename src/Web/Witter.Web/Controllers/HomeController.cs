@@ -1,6 +1,5 @@
 ﻿namespace Witter.Web.Controllers
 {
-
     using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : BaseController
@@ -16,7 +15,9 @@
         }
 
         [HttpGet("404")]
+#pragma warning disable CS0114 // Member hides inherited member; missing override keyword
         public IActionResult NotFound()
+#pragma warning restore CS0114 // Member hides inherited member; missing override keyword
         {
             return this.View();
         }

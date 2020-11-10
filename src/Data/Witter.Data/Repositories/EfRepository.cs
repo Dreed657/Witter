@@ -1,9 +1,10 @@
 ﻿namespace Witter.Data.Repositories
 {
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
     using Witter.Data.Common.Repositories;
 
     public class EfRepository<TEntity> : IRepository<TEntity>

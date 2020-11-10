@@ -1,9 +1,10 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Witter.Data.Common.Models;
-
-namespace Witter.Data.Models
+﻿namespace Witter.Data.Models
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    using Witter.Data.Common.Models;
+
     public class WeetLikes : BaseModel<string>
     {
         public WeetLikes()

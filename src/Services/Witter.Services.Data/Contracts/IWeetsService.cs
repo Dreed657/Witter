@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-using Witter.Data.Models;
-
-namespace Witter.Services.Contracts
+﻿namespace Witter.Services.Contracts
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
+    using Witter.Data.Models;
     using Witter.Web.ViewModels.Weets;
 
     public interface IWeetsService
@@ -23,7 +22,7 @@ namespace Witter.Services.Contracts
 
         IEnumerable<FullWeetViewModel> Explore();
 
-        T GetByIdToViewModel<T>(string Id);
+        T GetByIdToViewModel<T>(string id);
 
         Task<Weet> GetByIdAsync(string id);
     }

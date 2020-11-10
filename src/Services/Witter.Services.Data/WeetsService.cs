@@ -1,12 +1,13 @@
 ﻿namespace Witter.Services.Data
 {
-    using CloudinaryDotNet;
-    using Microsoft.EntityFrameworkCore;
-    using SdvCode.Services.Cloud;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using CloudinaryDotNet;
+    using Microsoft.EntityFrameworkCore;
+    using SdvCode.Services.Cloud;
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
     using Witter.Services.Contracts;
@@ -17,15 +18,15 @@
     public class WeetsService : IWeetsService
     {
         private readonly Cloudinary cloudinary;
-        private readonly IDeletableEntityRepository<Weet> _weetRepository;
-        private readonly IUserService _userService;
+        private readonly IDeletableEntityRepository<Weet> weetRepository;
+        private readonly IUserService userService;
         private readonly ITagsService tagsService;
 
         public WeetsService(Cloudinary cloudinary, IDeletableEntityRepository<Weet> repository, IUserService userService, ITagsService tagsService)
         {
             this.cloudinary = cloudinary;
-            this._weetRepository = repository;
-            this._userService = userService;
+            this.weetRepository = repository;
+            this.userService = userService;
             this.tagsService = tagsService;
         }
 
@@ -59,8 +60,8 @@
                 entity.Tags.Add(new WeetTag() { TagId = tagId, WeetId = entity.Id });
             }
 
-            await this._weetRepository.AddAsync(entity);
-            await this._weetRepository.SaveChangesAsync();
+            await this.weetRepository.AddAsync(entity);
+            await this.weetRepository.SaveChangesAsync();
         }
 
         public void Update(string id)
@@ -77,18 +78,18 @@
                 return;
             }
 
-            this._weetRepository.Delete(entity);
-            await this._weetRepository.SaveChangesAsync();
+            this.weetRepository.Delete(entity);
+            await this.weetRepository.SaveChangesAsync();
         }
 
         public IEnumerable<T> GetAll<T>()
         {
-            return this._weetRepository.All().To<T>().ToList();
+            return this.weetRepository.All().To<T>().ToList();
         }
 
         public IEnumerable<T> GetAllByTagId<T>(string name)
         {
-            return this._weetRepository.All()
+            return this.weetRepository.All()
                 .Where(x => x.Tags.Any(y => y.Tag.Name == name))
                 .To<T>()
                 .ToList();
@@ -96,7 +97,7 @@
 
         public IEnumerable<FullWeetViewModel> Explore()
         {
-            return this._weetRepository
+            return this.weetRepository
                 .All()
                 .Where(x => !x.IsDeleted)
                 .OrderByDescending(x => x.CreatedOn)
@@ -106,9 +107,9 @@
 
         public IEnumerable<FullWeetViewModel> Feed(string userId)
         {
-            var followingUsersIds = this._userService.GetAllUserFollowing(userId);
+            var followingUsersIds = this.userService.GetAllUserFollowing(userId);
 
-            return this._weetRepository
+            return this.weetRepository
                 .All()
                 .Where(x => followingUsersIds.Contains(x.Author.Id))
                 .OrderByDescending(x => x.CreatedOn)
@@ -116,18 +117,18 @@
                 .ToList();
         }
 
-        public T GetByIdToViewModel<T>(string Id)
+        public T GetByIdToViewModel<T>(string id)
         {
-            return this._weetRepository
+            return this.weetRepository
                 .All()
-                .Where(x => x.Id == Id)
+                .Where(x => x.Id == id)
                 .To<T>()
                 .FirstOrDefault();
         }
 
         public async Task<Weet> GetByIdAsync(string id)
         {
-            return await this._weetRepository.All().Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == id);
+            return await this.weetRepository.All().Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         private async Task<ICollection<WeetTag>> ConvertToTags(string weetId, string tags)

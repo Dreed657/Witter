@@ -1,8 +1,9 @@
 ﻿namespace Witter.Web.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
     using Witter.Services.Data;
@@ -24,7 +25,7 @@
             this.emailSender = emailSender;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             var settings = this.settingsService.GetAll<SettingViewModel>();
             var model = new SettingsListViewModel { Settings = settings };

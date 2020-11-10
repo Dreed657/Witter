@@ -1,9 +1,9 @@
 ﻿namespace Witter.Web.ViewModels.Profile
 {
-    using Microsoft.AspNetCore.Http;
     using System;
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
     using Witter.Data.Models;
     using Witter.Services.Mapping;
 

@@ -1,9 +1,10 @@
-﻿using System;
-using Witter.Data.Models;
-using Witter.Services.Mapping;
-
-namespace Witter.Web.ViewModels.Weets
+﻿namespace Witter.Web.ViewModels.Weets
 {
+    using System;
+
+    using Witter.Data.Models;
+    using Witter.Services.Mapping;
+
     public class DetailedWeetViewModel : IMapFrom<Weet>
     {
         public string Id { get; set; }

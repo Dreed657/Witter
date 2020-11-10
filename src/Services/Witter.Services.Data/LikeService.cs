@@ -1,23 +1,24 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using Witter.Data.Common.Repositories;
-using Witter.Data.Models;
-using Witter.Data.Models.Enums;
-using Witter.Services.Contracts;
-using Witter.Services.Data.Contracts;
-
-namespace Witter.Services.Data
+﻿namespace Witter.Services.Data
 {
+    using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
+    using Witter.Data.Common.Repositories;
+    using Witter.Data.Models;
+    using Witter.Data.Models.Enums;
+    using Witter.Services.Contracts;
+    using Witter.Services.Data.Contracts;
+
     public class LikeService : ILikeService
     {
-        private readonly IRepository<WeetLikes> _likesRepository;
+        private readonly IRepository<WeetLikes> likesRepository;
         private readonly IUserService userService;
         private readonly INotificationsService notificationsService;
         private readonly IWeetsService weetService;
 
         public LikeService(IRepository<WeetLikes> likesRepo, IUserService userService, INotificationsService notificationsService, IWeetsService weetService)
         {
-            this._likesRepository = likesRepo;
+            this.likesRepository = likesRepo;
             this.userService = userService;
             this.notificationsService = notificationsService;
             this.weetService = weetService;
@@ -25,7 +26,7 @@ namespace Witter.Services.Data
 
         public async Task Like(string userId, string weetId)
         {
-            var entity = this._likesRepository
+            var entity = this.likesRepository
                 .All()
                 .FirstOrDefaultAsync(x => x.UserId == userId && x.WeetId == weetId)
                 .GetAwaiter()
@@ -43,7 +44,7 @@ namespace Witter.Services.Data
                     IsLiked = true,
                 };
 
-                await this._likesRepository.AddAsync(newEntity);
+                await this.likesRepository.AddAsync(newEntity);
             }
             else
             {
@@ -51,12 +52,12 @@ namespace Witter.Services.Data
             }
 
             await this.notificationsService.AddNotificationAsync(user, weet.Author, NotificationType.Like);
-            await this._likesRepository.SaveChangesAsync();
+            await this.likesRepository.SaveChangesAsync();
         }
 
         public async Task DisLike(string userId, string weetId)
         {
-            var entity = this._likesRepository
+            var entity = this.likesRepository
                 .All()
                 .FirstOrDefaultAsync(x => x.UserId == userId && x.WeetId == weetId)
                 .GetAwaiter()
@@ -64,12 +65,12 @@ namespace Witter.Services.Data
 
             entity.IsLiked = false;
 
-            await this._likesRepository.SaveChangesAsync();
+            await this.likesRepository.SaveChangesAsync();
         }
 
         public bool IsLiked(string userId, string weetId)
         {
-            var entity = this._likesRepository
+            var entity = this.likesRepository
                 .All()
                 .FirstOrDefaultAsync(x => x.UserId == userId && x.WeetId == weetId)
                 .GetAwaiter()

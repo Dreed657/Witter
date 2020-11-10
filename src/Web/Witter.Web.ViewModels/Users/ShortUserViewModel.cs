@@ -1,8 +1,8 @@
-﻿using Witter.Data.Models;
-using Witter.Services.Mapping;
-
-namespace Witter.Web.ViewModels.Users
+﻿namespace Witter.Web.ViewModels.Users
 {
+    using Witter.Data.Models;
+    using Witter.Services.Mapping;
+
     public class ShortUserViewModel : IMapFrom<ApplicationUser>
     {
         public string Id { get; set; }

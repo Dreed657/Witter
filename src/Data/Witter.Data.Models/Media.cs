@@ -1,8 +1,9 @@
-﻿using System;
-using Witter.Data.Common.Models;
-
-namespace Witter.Data.Models
+﻿namespace Witter.Data.Models
 {
+    using System;
+
+    using Witter.Data.Common.Models;
+
     public class Media : BaseModel<string>
     {
         public Media()

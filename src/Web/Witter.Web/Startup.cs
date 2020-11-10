@@ -1,8 +1,7 @@
-﻿using Witter.Services.Contracts;
-using Witter.Services.Data.Contracts;
-
-namespace Witter.Web
+﻿namespace Witter.Web
 {
+    using System.Reflection;
+
     using CloudinaryDotNet;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -12,14 +11,15 @@ namespace Witter.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using System.Reflection;
     using Witter.Data;
     using Witter.Data.Common;
     using Witter.Data.Common.Repositories;
     using Witter.Data.Models;
     using Witter.Data.Repositories;
     using Witter.Data.Seeding;
+    using Witter.Services.Contracts;
     using Witter.Services.Data;
+    using Witter.Services.Data.Contracts;
     using Witter.Services.Mapping;
     using Witter.Services.Messaging;
     using Witter.Web.ViewModels;

@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Witter.Web.ViewModels.Common
+﻿namespace Witter.Web.ViewModels.Common
 {
+    using System;
+
     public static class ViewModelConstants
     {
         public static string TimeConverter(DateTime time)

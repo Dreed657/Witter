@@ -1,10 +1,11 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Witter.Data.Common.Models;
-using Witter.Data.Models.Enums;
-
-namespace Witter.Data.Models
+﻿namespace Witter.Data.Models
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    using Witter.Data.Common.Models;
+    using Witter.Data.Models.Enums;
+
     public class Notification : BaseModel<string>
     {
         public Notification()
