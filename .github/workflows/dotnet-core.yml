@@ -3,6 +3,12 @@ name: .NET Core
 on:
   push:
     branches: [ master ]
+  pull_request:
+      branches: [ master ]
+      
+env:
+  BuildConfig: Development
+  SolutionFile: Witter.sln
 
 jobs:
   build:
@@ -18,6 +24,6 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Development --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
